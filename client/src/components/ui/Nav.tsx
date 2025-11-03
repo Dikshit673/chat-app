@@ -38,7 +38,7 @@ function NavItem({
   return (
     <>
       {icon && icon}
-      <span className="truncate">{label}</span>
+      {label && <span className="truncate">{label}</span>}
       {children}
     </>
   );

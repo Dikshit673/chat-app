@@ -5,34 +5,32 @@ import { Ping } from './Ping';
 import type { ComponentProps } from 'react';
 import { createComponent } from '../helper/createComponent';
 
-const avatarCVA = cva(
-  'inline-block shrink-0 rounded-full object-cover text-indigo-500',
-  {
-    variants: {
-      size: {
-        xs: 'size-6',
-        sm: 'size-8',
-        md: 'size-10',
-        lg: 'size-12',
-        xl: 'size-14',
-      },
-    },
-    defaultVariants: {
-      size: 'md',
-    },
-  }
+const avatarImageCVA = cva(
+  'inline-block shrink-0 rounded-full object-cover text-indigo-500'
 );
 
-type AvatarProps = {
-  url?: string;
-  alt?: string;
-  size?: VariantProps<typeof avatarCVA>['size'];
-};
+const sizeCVA = cva('', {
+  variants: {
+    size: {
+      xs: 'size-6',
+      sm: 'size-8',
+      md: 'size-10',
+      lg: 'size-12',
+      xl: 'size-14',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 const AvatarWrapper = createComponent({
   render: ({ className, ...props }: ComponentProps<'div'>) => (
     <div
-      className={cn('relative inline-block shrink-0', className)}
+      className={cn(
+        'relative inline-flex shrink-0 items-center justify-center',
+        className
+      )}
       {...props}
     />
   ),
@@ -44,20 +42,18 @@ const AvatarImage = createComponent({
     size,
     className,
     ...props
-  }: ComponentProps<'img'> & VariantProps<typeof avatarCVA>) => (
+  }: ComponentProps<'img'> & VariantProps<typeof sizeCVA>) => (
     <img
-      className={cn(avatarCVA({ size }), 'ring-2 ring-gray-500', className)}
+      className={cn(
+        avatarImageCVA(),
+        sizeCVA({ size }),
+        'ring-2 ring-gray-500',
+        className
+      )}
       {...props}
     />
   ),
   displayName: 'AvatarImage',
-});
-
-const AvatarFallback = createComponent({
-  render: ({ className, ...props }: ComponentProps<'svg'>) => (
-    <UserCircle2 className={cn(avatarCVA(), className)} {...props} />
-  ),
-  displayName: 'AvatarFallback',
 });
 
 const AvatarStatusIndicator = createComponent({
@@ -67,16 +63,51 @@ const AvatarStatusIndicator = createComponent({
   displayName: 'AvatarStatusIndicator',
 });
 
+const AvatarFallback = createComponent({
+  render: ({
+    className,
+    fallback,
+    size,
+    ...props
+  }: ComponentProps<'div'> & { fallback?: string } & VariantProps<
+      typeof sizeCVA
+    >) => (
+    <div
+      className={cn('inline-flex items-center justify-center', className)}
+      {...props}
+    >
+      {fallback ? (
+        <div className={cn(sizeCVA({ size }))}>{fallback}</div>
+      ) : (
+        <div className={cn('relative inline-block', sizeCVA({ size }))}>
+          <UserCircle2 className="size-full" />
+          <AvatarStatusIndicator />
+        </div>
+      )}
+    </div>
+  ),
+  displayName: 'AvatarFallback',
+});
+
+type AvatarProps = VariantProps<typeof sizeCVA> & {
+  url?: string;
+  alt?: string;
+  fallback?: string;
+};
+
 const AvatarPresenter = createComponent({
-  render: ({ url, alt = '', size }: AvatarProps) => {
+  render: ({ url, alt = '', size, fallback }: AvatarProps) => {
     return (
       <AvatarWrapper>
         {url ? (
           <AvatarImage src={url} alt={alt} size={size} />
         ) : (
-          <AvatarFallback />
+          <AvatarFallback
+            fallback={fallback}
+            size={size}
+            className="text-indigo-500"
+          />
         )}
-        <AvatarStatusIndicator />
       </AvatarWrapper>
     );
   },

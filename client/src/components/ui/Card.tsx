@@ -8,7 +8,7 @@ const Wrapper = ({ className = '', ...props }: Props) => {
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground shadow-secondary flex flex-col gap-6 rounded-xl border border-gray-300 py-6',
+        'bg-card text-card-foreground shadow-secondary inline-flex flex-col gap-6 rounded-xl border border-gray-300 py-6',
         className
       )}
       {...props}
