@@ -1,0 +1,24 @@
+{
+  "name": "chatsapp",
+  "version": "1.0.0",
+  "description": "This is a real-time chat application built with React, TypeScript, Node.js, Express.js, Mongoose, and Socket.IO.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dikshit673/chat-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dikshit673/chat-app/issues"
+  },
+  "homepage": "https://github.com/Dikshit673/chat-app#readme"
+}
