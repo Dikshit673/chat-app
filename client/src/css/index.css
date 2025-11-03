@@ -61,5 +61,5 @@
 }
 
 body {
-  @apply slide-thin scroll-smooth;
+  @apply slide-thin scroll-smooth font-sans;
 }
