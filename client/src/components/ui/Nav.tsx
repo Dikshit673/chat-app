@@ -20,8 +20,8 @@ const nav = cva(
   {
     variants: {
       intent: {
-        default: ' hover:text-gray-700',
-        active: 'bg-gray-400/20  text-blue-700',
+        default: ' text-gray-600 hover:text-gray-900',
+        active: ' text-indigo-500 hover:text-indigo-700',
       },
     },
     defaultVariants: {
