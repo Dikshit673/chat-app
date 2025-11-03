@@ -6,7 +6,7 @@ import MainLayout from '@/app/_layout';
 // import Error from '@/app/errors/Error';
 import Page404 from '@/app/Page404';
 // import { PrivateGuard, PublicGuard } from './guards';
-import RootError from '@/app/errors/RootError';
+import { RootError } from '@/app/Error';
 
 const router = createBrowserRouter([
   {

@@ -4,9 +4,7 @@ import type { RouteObject } from 'react-router';
 import { Card } from '@/components/ui';
 import AuthLayout from '@/app/auth/_layout';
 
-import AuthError from '@/app/errors/AuthError';
-import ProfileError from '@/app/errors/ProfileError';
-import MessageError from '@/app/errors/MessageError';
+import { AuthError, ChatError, ProfileError } from '@/app/Error';
 
 const Chat = lazy(() => import('@/app/auth/Chat'));
 
@@ -27,8 +25,8 @@ export const authUserRouter: RouteObject = {
       ),
     },
     {
-      path: '/messages',
-      errorElement: <MessageError />,
+      path: '/chats',
+      errorElement: <ChatError />,
       element: (
         <Suspense fallback={<div>loading...</div>}>
           <Chat />

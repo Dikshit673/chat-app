@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router';
 import GuestLayout from '@/app/guest/_layout';
 
-import Error from '@/app/errors/Error';
+import { Error } from '@/app/Error';
 import Login from '@/app/guest/Login';
 import Signup from '@/app/guest/Signup';
 
