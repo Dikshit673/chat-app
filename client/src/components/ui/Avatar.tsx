@@ -89,16 +89,17 @@ const AvatarFallback = createComponent({
   displayName: 'AvatarFallback',
 });
 
-type AvatarProps = VariantProps<typeof sizeCVA> & {
-  url?: string;
-  alt?: string;
-  fallback?: string;
-};
+type AvatarProps = ComponentProps<'div'> &
+  VariantProps<typeof sizeCVA> & {
+    url?: string;
+    alt?: string;
+    fallback?: string;
+  };
 
 const AvatarPresenter = createComponent({
-  render: ({ url, alt = '', size, fallback }: AvatarProps) => {
+  render: ({ url, alt = '', size, fallback, ...props }: AvatarProps) => {
     return (
-      <AvatarWrapper>
+      <AvatarWrapper {...props}>
         {url ? (
           <AvatarImage src={url} alt={alt} size={size} />
         ) : (
