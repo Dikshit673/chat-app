@@ -21,6 +21,7 @@ import pic3 from './pic3.png';
 import pic4 from './pic4.png';
 import img1 from './img1.jpg';
 import img2 from './img2.jpg';
+// import { LogIn } from 'lucide-react';
 
 const assets = {
   avatar_icon,
@@ -115,6 +116,19 @@ export const userDummyData = [
   },
 ];
 
+export const onlineUsersDummyData = [
+  '680f50aaf10f3cd28382ecf2',
+  '680f50e4f10f3cd28382ecf9',
+  '680f5189f10f3cd28382ed13',
+  '680f518cf10f3cd28382ed14',
+  '680f518ff10f3cd28382ed15',
+  '680f5192f10f3cd28382ed16',
+  '680f510af10f3cd28382ed01',
+  '680f5137f10f3cd28382ed10',
+  '680f516cf10f3cd28382ed11',
+  '680f5180f10f3cd28382ed12',
+];
+
 export const messagesDummyData = [
   {
     _id: '680f571ff10f3cd28382f094',
@@ -173,3 +187,10 @@ export const messagesDummyData = [
     createdAt: '2025-04-28T10:24:08.523Z',
   },
 ];
+
+// export const NavigationLinks = [
+//   { to: '/login', icon: <LogIn/> , label: 'login', auth: false },
+//   { to: '/signup', icon: <BookPlus />, label: 'signup', auth: false },
+//   { to: '/chats', icon: <MessageCircle />, label: 'chats', auth: true },
+//   { to: '/profile', icon: <UserCheck2 />, label: 'profile', auth: true },
+// ];
