@@ -132,7 +132,7 @@ export const onlineUsersDummyData = [
 export const messagesDummyData = [
   {
     _id: '680f571ff10f3cd28382f094',
-    senderId: '680f5116f10f3cd28382ed02',
+    senderId: '680f50aaf10f3cd28382ecf2',
     receiverId: '680f50e4f10f3cd28382ecf9',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     seen: true,
@@ -141,14 +141,14 @@ export const messagesDummyData = [
   {
     _id: '680f5726f10f3cd28382f0b1',
     senderId: '680f50e4f10f3cd28382ecf9',
-    receiverId: '680f5116f10f3cd28382ed02',
+    receiverId: '680f50aaf10f3cd28382ecf2',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     seen: true,
     createdAt: '2025-04-28T10:23:34.520Z',
   },
   {
     _id: '680f5729f10f3cd28382f0b6',
-    senderId: '680f5116f10f3cd28382ed02',
+    senderId: '680f50aaf10f3cd28382ecf2',
     receiverId: '680f50e4f10f3cd28382ecf9',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     seen: true,
@@ -157,7 +157,7 @@ export const messagesDummyData = [
   {
     _id: '680f572cf10f3cd28382f0bb',
     senderId: '680f50e4f10f3cd28382ecf9',
-    receiverId: '680f5116f10f3cd28382ed02',
+    receiverId: '680f50aaf10f3cd28382ecf2',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     seen: true,
     createdAt: '2025-04-28T10:23:40.334Z',
@@ -165,14 +165,14 @@ export const messagesDummyData = [
   {
     _id: '680f573cf10f3cd28382f0c0',
     senderId: '680f50e4f10f3cd28382ecf9',
-    receiverId: '680f5116f10f3cd28382ed02',
+    receiverId: '680f50aaf10f3cd28382ecf2',
     image: img1,
     seen: true,
     createdAt: '2025-04-28T10:23:56.265Z',
   },
   {
     _id: '680f5745f10f3cd28382f0c5',
-    senderId: '680f5116f10f3cd28382ed02',
+    senderId: '680f50aaf10f3cd28382ecf2',
     receiverId: '680f50e4f10f3cd28382ecf9',
     image: img2,
     seen: true,
@@ -180,7 +180,7 @@ export const messagesDummyData = [
   },
   {
     _id: '680f5748f10f3cd28382f0ca',
-    senderId: '680f5116f10f3cd28382ed02',
+    senderId: '680f50aaf10f3cd28382ecf2',
     receiverId: '680f50e4f10f3cd28382ecf9',
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     seen: true,
