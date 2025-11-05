@@ -1,9 +1,8 @@
-import { cn } from '@/lib/utils';
+import { type ComponentProps } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { UserCircle2 } from 'lucide-react';
-import { Ping } from './Ping';
-import type { ComponentProps } from 'react';
+import { cn } from '@/lib/utils';
 import { createComponent } from '../helper/createComponent';
+import { Ping } from './Ping';
 
 const avatarImageCVA = cva(
   'inline-block shrink-0 rounded-full object-cover text-indigo-500'
@@ -69,39 +68,44 @@ const AvatarFallback = createComponent({
     fallback,
     size,
     ...props
-  }: ComponentProps<'div'> & { fallback?: string } & VariantProps<
+  }: ComponentProps<'div'> & { fallback: string } & VariantProps<
       typeof sizeCVA
-    >) => (
-    <div
-      className={cn('inline-flex items-center justify-center', className)}
-      {...props}
-    >
-      {fallback ? (
-        <div className={cn(sizeCVA({ size }))}>{fallback}</div>
-      ) : (
-        <div className={cn('relative inline-block', sizeCVA({ size }))}>
-          <UserCircle2 className="size-full" />
-          <AvatarStatusIndicator />
-        </div>
-      )}
-    </div>
-  ),
+    >) => {
+    const fallbackValue = fallback
+      .split(' ')
+      .map((word) => word[0])
+      .join('');
+
+    return (
+      <div
+        className={cn(
+          'inline-flex items-center justify-center rounded-full bg-indigo-100 text-center uppercase',
+          sizeCVA({ size }),
+          className
+        )}
+        {...props}
+      >
+        {fallbackValue}
+      </div>
+    );
+  },
   displayName: 'AvatarFallback',
 });
 
 type AvatarProps = ComponentProps<'div'> &
   VariantProps<typeof sizeCVA> & {
-    url?: string;
+    src?: string;
     alt?: string;
-    fallback?: string;
+    fallback: string;
   };
 
 const AvatarPresenter = createComponent({
-  render: ({ url, alt = '', size, fallback, ...props }: AvatarProps) => {
+  render: ({ src, alt = '', size, fallback, ...props }: AvatarProps) => {
     return (
       <AvatarWrapper {...props}>
-        {url ? (
-          <AvatarImage src={url} alt={alt} size={size} />
+        {/* <div className={cn('relative inline-block', sizeCVA({ size }))}> */}
+        {src ? (
+          <AvatarImage src={src} alt={alt} size={size} />
         ) : (
           <AvatarFallback
             fallback={fallback}
@@ -109,6 +113,8 @@ const AvatarPresenter = createComponent({
             className="text-indigo-500"
           />
         )}
+        <AvatarStatusIndicator />
+        {/* </div> */}
       </AvatarWrapper>
     );
   },
