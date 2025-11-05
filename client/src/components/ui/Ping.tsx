@@ -3,7 +3,7 @@ import { createComponent } from '../helper/createComponent';
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
-const pingVariants = cva('relative size-3 inline-flex rounded-full', {
+const pingCVA = cva('relative size-3 inline-flex rounded-full', {
   variants: {
     status: {
       online: 'bg-green-600',
@@ -15,7 +15,7 @@ const pingVariants = cva('relative size-3 inline-flex rounded-full', {
   },
 });
 
-const pulseVariants = cva(
+const pulseCVA = cva(
   'absolute inline-flex size-3.5 rounded-full opacity-75 animate-ping',
   {
     variants: {
@@ -27,7 +27,7 @@ const pulseVariants = cva(
   }
 );
 
-const textVariants = cva('sr-only font-medium capitalize', {
+const textCVA = cva('sr-only font-medium capitalize', {
   variants: {
     status: {
       online: 'text-green-700',
@@ -36,16 +36,18 @@ const textVariants = cva('sr-only font-medium capitalize', {
   },
 });
 
-type PingProps = ComponentProps<'div'> & VariantProps<typeof pingVariants>;
+export type PingStatusType = VariantProps<typeof pingCVA>;
+
+type PingProps = ComponentProps<'div'> & PingStatusType;
 
 export const Ping = createComponent({
   render: ({ className = '', status, ...props }: PingProps) => (
     <div className={cn('inline-flex items-center gap-2', className)} {...props}>
       <span className="relative flex items-center justify-center">
-        <span className={cn(pulseVariants({ status }))}></span>
-        <span className={cn(pingVariants({ status }))}></span>
+        <span className={cn(pulseCVA({ status }))}></span>
+        <span className={cn(pingCVA({ status }))}></span>
       </span>
-      <span className={cn(textVariants({ status }))}>{status}</span>
+      <span className={cn(textCVA({ status }))}>{status}</span>
     </div>
   ),
   displayName: 'Ping',

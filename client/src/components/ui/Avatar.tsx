@@ -2,7 +2,7 @@ import { type ComponentProps } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { createComponent } from '../helper/createComponent';
-import { Ping } from './Ping';
+import { Ping, type PingStatusType } from './Ping';
 
 const avatarImageCVA = cva(
   'inline-block shrink-0 rounded-full object-cover text-indigo-500'
@@ -22,6 +22,8 @@ const sizeCVA = cva('', {
     size: 'md',
   },
 });
+
+type SizeTypes = VariantProps<typeof sizeCVA>;
 
 const AvatarWrapper = createComponent({
   render: ({ className, ...props }: ComponentProps<'div'>) => (
@@ -56,8 +58,16 @@ const AvatarImage = createComponent({
 });
 
 const AvatarStatusIndicator = createComponent({
-  render: ({ className, ...props }: ComponentProps<'div'>) => (
-    <Ping className={cn('absolute right-0 bottom-0', className)} {...props} />
+  render: ({
+    className,
+    status,
+    ...props
+  }: ComponentProps<'div'> & PingStatusType) => (
+    <Ping
+      className={cn('absolute right-0 bottom-0', className)}
+      status={status}
+      {...props}
+    />
   ),
   displayName: 'AvatarStatusIndicator',
 });
@@ -68,9 +78,7 @@ const AvatarFallback = createComponent({
     fallback,
     size,
     ...props
-  }: ComponentProps<'div'> & { fallback: string } & VariantProps<
-      typeof sizeCVA
-    >) => {
+  }: ComponentProps<'div'> & SizeTypes & { fallback: string }) => {
     const fallbackValue = fallback
       .split(' ')
       .map((word) => word[0])
@@ -93,14 +101,22 @@ const AvatarFallback = createComponent({
 });
 
 type AvatarProps = ComponentProps<'div'> &
-  VariantProps<typeof sizeCVA> & {
+  SizeTypes &
+  PingStatusType & {
     src?: string;
     alt?: string;
     fallback: string;
   };
 
 const AvatarPresenter = createComponent({
-  render: ({ src, alt = '', size, fallback, ...props }: AvatarProps) => {
+  render: ({
+    src,
+    alt = '',
+    size,
+    fallback,
+    status,
+    ...props
+  }: AvatarProps) => {
     return (
       <AvatarWrapper {...props}>
         {/* <div className={cn('relative inline-block', sizeCVA({ size }))}> */}
@@ -113,7 +129,7 @@ const AvatarPresenter = createComponent({
             className="text-indigo-500"
           />
         )}
-        <AvatarStatusIndicator />
+        <AvatarStatusIndicator status={status} />
         {/* </div> */}
       </AvatarWrapper>
     );
