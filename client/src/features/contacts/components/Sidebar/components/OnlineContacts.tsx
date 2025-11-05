@@ -6,19 +6,18 @@ const OnlineContacts = () => {
     onlineUsersDummyData.includes(user._id)
   );
   return (
-    <div className="p-4">
+    <div className="space-y-1 px-4">
       <Heading.H6 title="online" />
-      <div className="slide-hidden overflow-x-auto px-1">
-        <div className="flex gap-2 py-4">
+      <div className="slide-hidden overflow-x-auto p-1.5">
+        <div className="flex items-center gap-2">
           {onlineUsers.map((user) => {
             return (
-              <div key={user._id} className="shrink-0">
-                <AvatarPresenter
-                  src={user.profilePic}
-                  alt={user.fullName}
-                  fallback={user.fullName}
-                />
-              </div>
+              <AvatarPresenter
+                key={user._id}
+                src={user.profilePic}
+                alt={user.fullName}
+                fallback={user.fullName}
+              />
             );
           })}
         </div>
