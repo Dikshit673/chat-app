@@ -106,6 +106,7 @@ type AvatarProps = ComponentProps<'div'> &
     src?: string;
     alt?: string;
     fallback: string;
+    showStatus?: boolean;
   };
 
 const AvatarPresenter = createComponent({
@@ -115,6 +116,7 @@ const AvatarPresenter = createComponent({
     size,
     fallback,
     status,
+    showStatus = false,
     ...props
   }: AvatarProps) => {
     return (
@@ -129,7 +131,7 @@ const AvatarPresenter = createComponent({
             className="text-indigo-500"
           />
         )}
-        <AvatarStatusIndicator status={status} />
+        {showStatus && <AvatarStatusIndicator status={status} />}
         {/* </div> */}
       </AvatarWrapper>
     );

@@ -55,6 +55,7 @@ const Navbar = () => {
           {isAuth && (
             <AvatarPresenter
               size={'sm'}
+              fallback="abcj dksj"
               onClick={() => setIsProfileOpen((prev) => !prev)}
             />
           )}
@@ -77,7 +78,7 @@ const Navbar = () => {
       {isAuth && (
         <NavModel isOpen={isProfileOpen} setIsOpen={setIsProfileOpen}>
           <Card className="gap-2 p-2">
-            <AvatarPresenter size={'lg'} />
+            <AvatarPresenter size={'lg'} fallback="abcj dksj" />
             <p className="text-center">John Doe</p>
             <Nav.Button
               icon={<LogOutIcon />}

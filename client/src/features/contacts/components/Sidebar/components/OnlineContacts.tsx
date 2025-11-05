@@ -16,6 +16,7 @@ const OnlineContactsPresenter = () => {
               src={user.profilePic}
               alt={user.fullName}
               fallback={user.fullName}
+              showStatus
               status={isOnline ? 'online' : 'offline'}
             />
           );
