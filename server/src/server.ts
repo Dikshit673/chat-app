@@ -1,11 +1,8 @@
-import express, { Request, Response } from 'express';
+import httpServer from './lib/httpServer.js';
+import { EnvVars } from './utils/EnvVarConfig.js';
 
-const app = express();
+const { PORT } = EnvVars;
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello World!');
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000 🚀');
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

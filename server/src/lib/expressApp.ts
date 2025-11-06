@@ -1,0 +1,31 @@
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { EnvVars } from '@/utils/EnvVarConfig.js';
+import { authRoutes } from '@/features/auth/routes/auth.route.js';
+import { connectDB } from './mongoDb.js';
+
+// Connect to DB
+connectDB();
+
+// Express App
+const expressApp = express();
+
+// cors options frontend whitelisting
+const corsOptions = {
+  origin: `${EnvVars.CLIENT_URL}`, // frontend website URL
+  credentials: true, // Allows cookies
+};
+
+// Middlewares
+expressApp.use(cors(corsOptions)); // whitelisting for cors
+expressApp.use(express.json()); // parsing JSON request bodies
+expressApp.use(express.urlencoded({ extended: true })); // parsing URL-encoded request
+expressApp.use(cookieParser()); // cookie parsing
+
+// Routes
+expressApp.get('/', (_req: Request, res: Response) => res.send('Hello World!'));
+expressApp.get('/ping', (_req: Request, res: Response) => res.send('pong'));
+expressApp.use('/api/v1/auth', authRoutes);
+
+export default expressApp;
