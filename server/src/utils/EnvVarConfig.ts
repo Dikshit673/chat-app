@@ -42,8 +42,10 @@ if (!parsed.success) {
   process.exit(1);
 }
 
-const EnvVars = parsed.data;
+const _env = parsed.data;
 
-const IS_DEV = EnvVars.NODE_ENV === 'development';
+const IS_DEV = _env.NODE_ENV === 'development';
 
-export { EnvVars, IS_DEV };
+const EnvVars = { ..._env, IS_DEV };
+
+export { EnvVars };
