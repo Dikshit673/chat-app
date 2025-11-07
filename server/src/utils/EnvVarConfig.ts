@@ -1,46 +1,49 @@
 import dotenv from 'dotenv';
+import z from 'zod';
 
 dotenv.config();
 
-const getVar = (
-  key: string,
-  options?: { required?: boolean; defaultValue?: string }
-) => {
-  const value = process.env[key] ?? options?.defaultValue;
-  if (!value && options?.required !== false) {
-    throw new Error(`❌ Missing required environment variable: ${key}`);
-  }
-  return value;
-};
+export const envSchema = z.object({
+  // Application settings
+  NODE_ENV: z.enum(['development', 'production']).default('production'),
+  PORT: z.coerce.number().default(3000),
 
-const IS_DEV = getVar('NODE_ENV') === 'development';
-
-const EnvVars = {
-  // MongoDB connection string
-  MONGODB_URI: getVar('MONGODB_URI'),
-  MONGODB_DB_NAME: getVar('MONGODB_DB_NAME'),
-  MONGODB_AUTH_SOURCE: getVar('MONGODB_AUTH_SOURCE'),
+  // MongoDB
+  MONGODB_URI: z.string(),
+  MONGODB_DB_NAME: z.string(),
+  MONGODB_AUTH_SOURCE: z.string().optional(),
 
   // Cloudinary
-  CLOUDINARY_API_KEY: getVar('CLOUDINARY_API_KEY'),
-  CLOUDINARY_API_SECRET: getVar('CLOUDINARY_API_SECRET'),
-  CLOUDINARY_CLOUD_NAME: getVar('CLOUDINARY_CLOUD_NAME'),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
+  CLOUDINARY_CLOUD_NAME: z.string(),
 
   // JWT
-  ACC_JWT_SECRET: getVar('ACC_JWT_SECRET'),
-  REF_JWT_SECRET: getVar('REF_JWT_SECRET'),
+  ACC_JWT_SECRET: z.string(),
+  REF_JWT_SECRET: z.string(),
 
-  // cookies
-  ACC_COOKIE_NAME: getVar('ACC_COOKIE_NAME'),
-  REF_COOKIE_NAME: getVar('REF_COOKIE_NAME'),
+  // Cookies
+  ACC_COOKIE_NAME: z.string(),
+  REF_COOKIE_NAME: z.string(),
 
-  // Application settings
-  NODE_ENV: getVar('NODE_ENV'),
-  PORT: getVar('PORT'),
-  IS_DEV,
+  // URLs
+  CLIENT_URL: z.url(),
+});
 
-  // Client URL
-  CLIENT_URL: IS_DEV ? getVar('CLIENT_URL_DEV') : getVar('CLIENT_URL_PROD'),
-};
+export type EnvVarsType = z.infer<typeof envSchema>;
+
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error(
+    '❌ Invalid environment variables:\n',
+    z.treeifyError(parsed.error)
+  );
+  process.exit(1);
+}
+
+const EnvVars = parsed.data;
+
+const IS_DEV = EnvVars.NODE_ENV === 'development';
 
 export { EnvVars, IS_DEV };
