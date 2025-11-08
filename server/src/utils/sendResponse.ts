@@ -1,30 +1,32 @@
-import { ApiResponse } from '@/types/response.js';
+import { ApiResponse, ApiResponseData } from '@/types/response.js';
 import { Response } from 'express';
 
-export const sendSuccess = <T>(
+type FullApiResponse = ApiResponse & ApiResponseData;
+
+export const sendSuccess = (
   res: Response,
   status: number,
   message: string,
-  data?: ApiResponse<T>
+  data?: ApiResponseData
 ) => {
-  const resData = {
-    ...data,
+  const response = {
     success: true,
     message,
-  } as const;
-  return res.status(status).json(resData);
+    ...data,
+  } satisfies FullApiResponse;
+  return res.status(status).json(response);
 };
 
-export const sendError = <T>(
+export const sendError = (
   res: Response,
   status: number,
   message: string,
-  data?: ApiResponse<T>
+  data?: ApiResponseData
 ) => {
-  const resData = {
-    ...data,
+  const response = {
     success: false,
     message,
-  } as const;
-  return res.status(status).json(resData);
+    ...data,
+  } satisfies FullApiResponse;
+  return res.status(status).json(response);
 };

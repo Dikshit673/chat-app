@@ -1,9 +1,9 @@
-import type { IUserNoPassDocument } from '@/models/user.model.ts';
+import type { IuserNoPass } from '@/features/user/types/user.ts';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IUserNoPassDocument; // or whatever your type is
+      user?: IuserNoPass; // or whatever your type is
     }
   }
 }

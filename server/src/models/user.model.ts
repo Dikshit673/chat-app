@@ -8,8 +8,6 @@ export interface IUserDocument extends IUser, Document {
   updatedAt: Date;
 }
 
-export type IUserNoPassDocument = Omit<IUserDocument, 'password'>;
-
 // Optionally define instance methods or statics here
 export interface IUserModel extends Model<IUserDocument> {
   findByEmail(email: string): Promise<IUserDocument | null>;
