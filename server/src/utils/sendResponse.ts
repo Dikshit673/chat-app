@@ -26,5 +26,5 @@ export const sendError = <T>(
     success: false,
     message,
   } as const;
-  return res.status(status).json({ resData });
+  return res.status(status).json(resData);
 };

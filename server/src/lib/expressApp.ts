@@ -3,10 +3,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { authRoutes } from '@/features/auth/routes/auth.route.js';
-import { connectDB } from './mongoDb.js';
+import { sendError } from '@/utils/sendResponse.js';
+// import { connectDB } from './mongoDb.js';
 
 // Connect to DB
-connectDB();
+// connectDB();
 
 // Express App
 const expressApp = express();
@@ -27,5 +28,9 @@ expressApp.use(cookieParser()); // cookie parsing
 expressApp.get('/', (_req: Request, res: Response) => res.send('Hello World!'));
 expressApp.get('/ping', (_req: Request, res: Response) => res.send('pong'));
 expressApp.use('/api/v1/auth', authRoutes);
+
+expressApp.use((_req: Request, res: Response) =>
+  sendError(res, 404, "This Route doesn't exists")
+);
 
 export default expressApp;
