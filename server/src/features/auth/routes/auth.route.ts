@@ -1,25 +1,21 @@
 import { Router } from 'express';
+import { register } from '../controllers/register.js';
+import { login } from '../controllers/login.js';
+import { logout } from '../controllers/logout.js';
+import { refresh } from '../controllers/refresh.js';
+import { me } from '../controllers/me.js';
+import { checkAuth } from '@/middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.post('/register', async (_req, res) => {
-  res.send('register');
-});
+router.post('/signup', register);
 
-router.post('/login', async (_req, res) => {
-  res.send('login');
-});
+router.post('/login', login);
 
-router.post('/logout', async (_req, res) => {
-  res.send('logout');
-});
+router.post('/logout', logout);
 
-router.post('/refresh', async (_req, res) => {
-  res.send('refresh');
-});
+router.post('/refresh', refresh);
 
-router.get('/me', async (_req, res) => {
-  res.send('me');
-});
+router.get('/me', checkAuth, me);
 
 export { router as authRoutes };
