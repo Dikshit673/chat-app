@@ -4,10 +4,10 @@ import cookieParser from 'cookie-parser';
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { authRoutes } from '@/features/auth/routes/auth.route.js';
 import { sendError } from '@/utils/sendResponse.js';
-// import { connectDB } from './mongoDb.js';
+import { connectDB } from './mongoDb.js';
 
 // Connect to DB
-// connectDB();
+connectDB();
 
 // Express App
 const expressApp = express();
