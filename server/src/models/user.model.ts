@@ -1,14 +1,11 @@
-// src/models/User.model.ts
 import { Schema, Document, Model, model } from 'mongoose';
 import { IUser } from '@/features/user/types/user.js';
 
-// Combine IUser with Mongoose's Document to include _id, timestamps, etc.
 export interface IUserDocument extends IUser, Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Optionally define instance methods or statics here
 export interface IUserModel extends Model<IUserDocument> {
   findByEmail(email: string): Promise<IUserDocument | null>;
 }
@@ -24,7 +21,6 @@ const userSchema = new Schema<IUserDocument>(
   { timestamps: true }
 );
 
-// Example static method
 userSchema.statics.findByEmail = function (email: string) {
   return this.findOne({ email });
 };
