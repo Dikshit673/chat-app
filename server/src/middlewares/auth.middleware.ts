@@ -3,8 +3,8 @@ import z from 'zod';
 import { sendError } from '@/utils/sendResponse.js';
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import {
-  handleAccessToken,
-  handleRefreshToken,
+  getAccessTokenUser,
+  getRefreshTokenUser,
 } from '@/features/auth/utils/tokens.js';
 
 const headersSchema = z
@@ -24,25 +24,27 @@ export const checkAuth = async (
 ) => {
   try {
     // handle access token
-    const authorizationHeader = req.headers.authorization;
+    const header = req.headers.authorization;
+    const authHeader = headersSchema.safeParse(header);
 
-    const parsedAuthorization = headersSchema.safeParse(authorizationHeader);
-
-    if (!parsedAuthorization.success) {
-      const err = parsedAuthorization.error.issues[0];
+    if (!authHeader.success) {
+      const err = authHeader.error.issues[0];
       const message = EnvVars.IS_DEV ? err.message : 'Unauthorized';
       return sendError(res, 401, message);
     }
 
-    const accessToken = parsedAuthorization.data.split(' ')[1];
+    const accessToken = authHeader.data.split(' ')[1];
+    const verifiedAccess = getAccessTokenUser(accessToken);
 
-    const accessPayload = handleAccessToken(res, accessToken);
+    if (!verifiedAccess.success) {
+      const errorMsg = verifiedAccess.error.message || 'Server Error';
+      return sendError(res, 401, errorMsg);
+    }
 
-    if (!accessPayload) return; // error response already sent just return here
+    const accessPayload = verifiedAccess.data.user;
 
     // handle cookies
     const cookieToken = req.cookies[EnvVars.REF_COOKIE_NAME];
-
     const parsedCookies = cookieSchema.safeParse(cookieToken);
 
     if (!parsedCookies.success) {
@@ -51,11 +53,14 @@ export const checkAuth = async (
       return sendError(res, 403, message);
     }
 
-    const refreshToken = parsedCookies.data;
+    const refreshData = getRefreshTokenUser(parsedCookies.data);
 
-    const refreshPayload = handleRefreshToken(res, refreshToken);
+    if (!refreshData.success) {
+      const errorMsg = refreshData.error.message || 'Server Error';
+      return sendError(res, 401, errorMsg);
+    }
 
-    if (!refreshPayload) return; // error response already sent just return here
+    const refreshPayload = refreshData.data.user;
 
     // check if access token and refresh token belong to the same user
     if (accessPayload._id !== refreshPayload._id) {

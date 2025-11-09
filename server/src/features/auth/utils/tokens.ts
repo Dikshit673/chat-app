@@ -1,54 +1,56 @@
-import type { Response } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { ACC_JWT_CONFIG, REF_JWT_CONFIG } from '../configs/jwtConfig.js';
-import { sendError } from '@/utils/sendResponse.js';
 import { IuserNoPass } from '@/features/user/types/user.js';
 
-type UserVerifiedPayload = JwtPayload & IuserNoPass;
+type JwtUserPayload = JwtPayload & IuserNoPass;
 
-const extractUser = (decodedPayload: UserVerifiedPayload): IuserNoPass => {
+const extractUser = (decodedPayload: JwtUserPayload): IuserNoPass => {
   const { iat, exp, nbf, jti, aud, iss, sub, ...userPayload } = decodedPayload;
   return userPayload;
 };
 
-export const generateAccessToken = (payload: IuserNoPass): string => {
+export const issueAccessToken = (payload: IuserNoPass): string => {
   return jwt.sign(payload, ACC_JWT_CONFIG.secret, ACC_JWT_CONFIG.options);
 };
 
-export const generateRefreshToken = (payload: IuserNoPass): string => {
+export const issueRefreshToken = (payload: IuserNoPass): string => {
   return jwt.sign(payload, REF_JWT_CONFIG.secret, REF_JWT_CONFIG.options);
 };
 
-const verifyAccessToken = (token: string): UserVerifiedPayload => {
-  return jwt.verify(token, ACC_JWT_CONFIG.secret) as UserVerifiedPayload;
+const verifyAccessToken = (token: string): JwtUserPayload => {
+  return jwt.verify(token, ACC_JWT_CONFIG.secret) as JwtUserPayload;
 };
 
-const verifyRefreshToken = (token: string): UserVerifiedPayload => {
-  return jwt.verify(token, REF_JWT_CONFIG.secret) as UserVerifiedPayload;
+const verifyRefreshToken = (token: string): JwtUserPayload => {
+  return jwt.verify(token, REF_JWT_CONFIG.secret) as JwtUserPayload;
 };
 
-export const handleAccessToken = (res: Response, token: string) => {
+export const getAccessTokenUser = (token: string) => {
   try {
+    const success = true as const;
     const payload = verifyAccessToken(token);
     const user = extractUser(payload);
-    return user;
+    return { success, data: { user } };
   } catch (error) {
-    const errMsg =
-      (error as Error).message || 'something wrong with access token.';
-    sendError(res, 401, errMsg);
-    return null;
+    const success = false as const;
+    const err = error as Error;
+    const message = err.message || 'something wrong with access token.';
+    // sendError(res, 401, errMsg);
+    return { success, error: { ...err, message } };
   }
 };
 
-export const handleRefreshToken = (res: Response, token: string) => {
+export const getRefreshTokenUser = (token: string) => {
   try {
+    const success = true as const;
     const payload = verifyRefreshToken(token);
     const user = extractUser(payload);
-    return user;
+    return { success, data: { user } };
   } catch (error) {
-    const errMsg =
-      (error as Error).message || 'something wrong with access token.';
-    sendError(res, 403, errMsg);
-    return null;
+    const success = false as const;
+    const err = error as Error;
+    const message = err.message || 'something wrong with access token.';
+    // sendError(res, 403, errMsg);
+    return { success, error: { ...err, message } };
   }
 };
