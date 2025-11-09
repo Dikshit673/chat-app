@@ -1,8 +1,7 @@
-// cookieConfig.ts
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { CookieOptions } from 'express';
 import { ACC_JWT_CONFIG, REF_JWT_CONFIG } from './jwtConfig.js';
-import { parseTokenAge } from '../utils/parseTokenAge.js';
+import { jwtExpiryToCookieAge, MaxAge } from '../utils/jwtExpiryToCookieAge.js';
 
 type CookieConfig = { name: string; options: CookieOptions };
 
@@ -17,11 +16,11 @@ const createConfig = (
   options,
 });
 
-const ACC_COOKIE_AGE = parseTokenAge(
-  ACC_JWT_CONFIG.options.expiresIn as string
+const ACC_COOKIE_AGE: MaxAge = jwtExpiryToCookieAge(
+  ACC_JWT_CONFIG.options.expiresIn
 );
-const REF_COOKIE_AGE = parseTokenAge(
-  REF_JWT_CONFIG.options.expiresIn as string
+const REF_COOKIE_AGE: MaxAge = jwtExpiryToCookieAge(
+  REF_JWT_CONFIG.options.expiresIn
 );
 
 const COMMON_COOKIE_OPTIONS: CookieOptions = {

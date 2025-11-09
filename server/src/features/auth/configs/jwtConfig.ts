@@ -1,6 +1,6 @@
-// jwtConfig.ts
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { SignOptions } from 'jsonwebtoken';
+import { ExpiresIn } from '../utils/jwtExpiryToCookieAge.js';
 
 const { ACC_JWT_SECRET, REF_JWT_SECRET, IS_DEV } = EnvVars;
 
@@ -18,8 +18,8 @@ const createConfig = (
   options: { ...options, issuer },
 });
 
-const ACC_JWT_AGE = IS_DEV ? ('5m' as const) : ('15m' as const);
-const REF_JWT_AGE = IS_DEV ? ('15m' as const) : ('7d' as const);
+const ACC_JWT_AGE: ExpiresIn = IS_DEV ? '5m' : '15m';
+const REF_JWT_AGE: ExpiresIn = IS_DEV ? '15m' : '7d';
 
 export const ACC_JWT_CONFIG = createConfig(ACC_JWT_SECRET, {
   expiresIn: ACC_JWT_AGE,
