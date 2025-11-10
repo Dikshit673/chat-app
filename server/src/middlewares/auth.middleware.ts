@@ -17,7 +17,7 @@ const cookieSchema = z
   .string()
   .refine((val) => !val || val.length > 0, 'Invalid refresh cookie format');
 
-export const checkAuth = async (
+export const protectRoute = async (
   req: Request,
   res: Response,
   next: NextFunction
