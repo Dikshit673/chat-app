@@ -20,4 +20,4 @@ This is a real-time chat application built with React, TypeScript, Node.js, Expr
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
