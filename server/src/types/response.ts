@@ -1,4 +1,4 @@
-import { IuserNoPass } from '@/features/user/types/user.js';
+import { IUserPayload } from '@/features/user/types/user.js';
 
 export interface ApiResponse {
   success: boolean;
@@ -6,6 +6,6 @@ export interface ApiResponse {
 }
 
 export type ApiResponseData = {
-  jwt?: string;
-  user?: IuserNoPass;
+  jwtToken?: string;
+  authUser?: IUserPayload;
 };

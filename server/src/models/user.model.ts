@@ -25,4 +25,4 @@ userSchema.statics.findByEmail = function (email: string) {
   return this.findOne({ email });
 };
 
-export const UserModel = model<IUserDocument, IUserModel>('User', userSchema);
+export const User = model<IUserDocument, IUserModel>('User', userSchema);
