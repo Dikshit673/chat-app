@@ -1,14 +1,16 @@
 import { Router } from 'express';
-import { register } from '../controllers/register.js';
-import { login } from '../controllers/login.js';
-import { logout } from '../controllers/logout.js';
-import { refresh } from '../controllers/refresh.js';
-import { checkAuth } from '../controllers/checkAuth.js';
+import {
+  checkAuth,
+  login,
+  logout,
+  refresh,
+  register,
+} from '../controllers/index.js';
 import { protectRoute } from '@/middlewares/auth.middleware.js';
 
 const router = Router();
 
-router.post('/signup', register);
+router.post('/register', register);
 
 router.post('/login', login);
 
