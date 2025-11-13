@@ -1,19 +1,19 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import { ACC_JWT_CONFIG, REF_JWT_CONFIG } from '../configs/jwtConfig.js';
-import { IuserNoPass } from '@/features/user/types/user.js';
+import { IUserPayload } from '@/features/user/types/user.js';
 
-type JwtUserPayload = JwtPayload & IuserNoPass;
+type JwtUserPayload = JwtPayload & IUserPayload;
 
-const extractUser = (decodedPayload: JwtUserPayload): IuserNoPass => {
+const extractUser = (decodedPayload: JwtUserPayload): IUserPayload => {
   const { iat, exp, nbf, jti, aud, iss, sub, ...userPayload } = decodedPayload;
   return userPayload;
 };
 
-export const issueAccessToken = (payload: IuserNoPass): string => {
+export const issueAccessToken = (payload: IUserPayload): string => {
   return jwt.sign(payload, ACC_JWT_CONFIG.secret, ACC_JWT_CONFIG.options);
 };
 
-export const issueRefreshToken = (payload: IuserNoPass): string => {
+export const issueRefreshToken = (payload: IUserPayload): string => {
   return jwt.sign(payload, REF_JWT_CONFIG.secret, REF_JWT_CONFIG.options);
 };
 

@@ -8,14 +8,6 @@ type CookieConfig = { name: string; options: CookieOptions };
 const { IS_DEV, ACC_COOKIE_NAME, REF_COOKIE_NAME } = EnvVars;
 const IS_PROD = !IS_DEV;
 
-const createConfig = (
-  name: string = '',
-  options: CookieOptions
-): CookieConfig => ({
-  name,
-  options,
-});
-
 const ACC_COOKIE_AGE: MaxAge = jwtExpiryToCookieAge(
   ACC_JWT_CONFIG.options.expiresIn
 );
@@ -34,18 +26,17 @@ const ACC_COOKIE_OPTIONS: CookieOptions = {
   // maxage: production 15mins, development 5mins
   maxAge: ACC_COOKIE_AGE,
 };
-
 const REF_COOKIE_OPTIONS: CookieOptions = {
   ...COMMON_COOKIE_OPTIONS,
   // maxage: production 7days, development 15mins
   maxAge: REF_COOKIE_AGE,
 };
 
-export const ACC_COOKIE_CONFIG = createConfig(
-  ACC_COOKIE_NAME,
-  ACC_COOKIE_OPTIONS
-);
-export const REF_COOKIE_CONFIG = createConfig(
-  REF_COOKIE_NAME,
-  REF_COOKIE_OPTIONS
-);
+export const ACC_COOKIE_CONFIG = {
+  name: ACC_COOKIE_NAME,
+  options: ACC_COOKIE_OPTIONS,
+} satisfies CookieConfig;
+export const REF_COOKIE_CONFIG = {
+  name: REF_COOKIE_NAME,
+  options: REF_COOKIE_OPTIONS,
+} satisfies CookieConfig;
