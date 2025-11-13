@@ -5,6 +5,7 @@ import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { authRoutes } from '@/features/auth/routes/auth.route.js';
 import { sendError } from '@/utils/sendResponse.js';
 import { connectDB } from './mongoDb.js';
+import { deviceIdMiddleware } from '@/middlewares/deviceId.middleware.js';
 
 // Connect to DB
 connectDB();
@@ -23,6 +24,7 @@ expressApp.use(cors(corsOptions)); // whitelisting for cors
 expressApp.use(express.json()); // parsing JSON request bodies
 expressApp.use(express.urlencoded({ extended: true })); // parsing URL-encoded request
 expressApp.use(cookieParser()); // cookie parsing
+expressApp.use(deviceIdMiddleware()); // for device id
 
 // Routes
 expressApp.get('/', (_req: Request, res: Response) => res.send('Hello World!'));
