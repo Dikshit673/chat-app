@@ -1,16 +1,8 @@
-import { IUserDocument } from '@/models/user.model.js';
+import z from 'zod';
+import { authUserSchema, IUserSchema, userSchema } from '@/lib/zod.js';
 
-export interface IUser {
-  name: string;
-  email: string;
-  password: string;
-  role: 'user' | 'admin';
-  profilePic?: string;
-}
+export type IUser = z.infer<typeof IUserSchema>;
 
-type IuserNoPassKeys = keyof Omit<IUser, 'password'>;
+export type IUserObject = z.infer<typeof userSchema>;
 
-export type IuserNoPass = Pick<
-  IUserDocument,
-  '_id' | IuserNoPassKeys | 'createdAt' | 'updatedAt'
->;
+export type IUserPayload = z.infer<typeof authUserSchema>;
