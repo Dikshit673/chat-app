@@ -1,21 +1,14 @@
 import type { NextFunction, Request, Response } from 'express';
-import z from 'zod';
 import { sendError } from '@/utils/sendResponse.js';
 import { EnvVars } from '@/utils/EnvVarConfig.js';
 import {
   getAccessTokenUser,
   getRefreshTokenUser,
 } from '@/features/auth/utils/tokens.js';
-
-const headersSchema = z
-  .string()
-  .refine(
-    (val) => !val || /^Bearer\s+[\w-]+\.[\w-]+\.[\w-]+$/.test(val),
-    'Invalid Authorization header format'
-  );
-const cookieSchema = z
-  .string()
-  .refine((val) => !val || val.length > 0, 'Invalid refresh cookie format');
+import {
+  refreshTokenCookieSchema,
+  accessTokenheadersSchema,
+} from '@/lib/zod.js';
 
 export const protectRoute = async (
   req: Request,
@@ -25,7 +18,7 @@ export const protectRoute = async (
   try {
     // handle access token
     const header = req.headers.authorization;
-    const authHeader = headersSchema.safeParse(header);
+    const authHeader = accessTokenheadersSchema.safeParse(header);
 
     if (!authHeader.success) {
       const err = authHeader.error.issues[0];
@@ -37,7 +30,8 @@ export const protectRoute = async (
     const verifiedAccess = getAccessTokenUser(accessToken);
 
     if (!verifiedAccess.success) {
-      const errorMsg = verifiedAccess.error.message || 'Server Error';
+      const errorMsg =
+        verifiedAccess.error.message || 'Access token is invalid.';
       return sendError(res, 401, errorMsg);
     }
 
@@ -45,7 +39,7 @@ export const protectRoute = async (
 
     // handle cookies
     const cookieToken = req.cookies[EnvVars.REF_COOKIE_NAME];
-    const parsedCookies = cookieSchema.safeParse(cookieToken);
+    const parsedCookies = refreshTokenCookieSchema.safeParse(cookieToken);
 
     if (!parsedCookies.success) {
       const err = parsedCookies.error.issues[0];
@@ -56,7 +50,7 @@ export const protectRoute = async (
     const refreshData = getRefreshTokenUser(parsedCookies.data);
 
     if (!refreshData.success) {
-      const errorMsg = refreshData.error.message || 'Server Error';
+      const errorMsg = refreshData.error.message || 'Refresh token is invalid.';
       return sendError(res, 401, errorMsg);
     }
 
