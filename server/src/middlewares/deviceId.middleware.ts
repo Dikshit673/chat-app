@@ -2,7 +2,7 @@ import {
   generateDeviceId,
   getDeviceId,
   setDeviceIdCookie,
-} from '@/utils/deviceIdUtil.js';
+} from '@/features/auth/utils/deviceIdUtil.js';
 import { NextFunction, Request, Response } from 'express';
 
 export const deviceIdMiddleware =

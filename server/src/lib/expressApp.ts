@@ -21,8 +21,9 @@ const corsOptions = {
 
 // Middlewares
 expressApp.use(cors(corsOptions)); // whitelisting for cors
-expressApp.use(express.json()); // parsing JSON request bodies
-expressApp.use(express.urlencoded({ extended: true })); // parsing URL-encoded request
+expressApp.use(express.static('public'));
+expressApp.use(express.json({ limit: '16kb' })); // parsing JSON request bodies
+expressApp.use(express.urlencoded({ extended: true, limit: '16kb' })); // parsing URL-encoded request
 expressApp.use(cookieParser()); // cookie parsing
 expressApp.use(deviceIdMiddleware()); // for device id
 
