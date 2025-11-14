@@ -5,10 +5,7 @@ import {
   getAccessTokenUser,
   getRefreshTokenUser,
 } from '@/features/auth/utils/tokens.js';
-import {
-  refreshTokenCookieSchema,
-  accessTokenheadersSchema,
-} from '@/lib/zod.js';
+import { refreshCookieSchema, authheadersSchema } from '@/lib/zod.js';
 
 export const protectRoute = async (
   req: Request,
@@ -18,7 +15,7 @@ export const protectRoute = async (
   try {
     // handle access token
     const header = req.headers.authorization;
-    const authHeader = accessTokenheadersSchema.safeParse(header);
+    const authHeader = authheadersSchema.safeParse(header);
 
     if (!authHeader.success) {
       const err = authHeader.error.issues[0];
@@ -39,7 +36,7 @@ export const protectRoute = async (
 
     // handle cookies
     const cookieToken = req.cookies[EnvVars.REF_COOKIE_NAME];
-    const parsedCookies = refreshTokenCookieSchema.safeParse(cookieToken);
+    const parsedCookies = refreshCookieSchema.safeParse(cookieToken);
 
     if (!parsedCookies.success) {
       const err = parsedCookies.error.issues[0];
