@@ -10,19 +10,23 @@ const extractUser = (decodedPayload: JwtUserPayload): IUserPayload => {
 };
 
 export const issueAccessToken = (payload: IUserPayload): string => {
-  return jwt.sign(payload, ACC_JWT_CONFIG.secret, ACC_JWT_CONFIG.options);
+  const { secret, options } = ACC_JWT_CONFIG;
+  return jwt.sign(payload, secret, options);
 };
 
 export const issueRefreshToken = (payload: IUserPayload): string => {
-  return jwt.sign(payload, REF_JWT_CONFIG.secret, REF_JWT_CONFIG.options);
+  const { secret, options } = REF_JWT_CONFIG;
+  return jwt.sign(payload, secret, options);
 };
 
 const verifyAccessToken = (token: string): JwtUserPayload => {
-  return jwt.verify(token, ACC_JWT_CONFIG.secret) as JwtUserPayload;
+  const { secret } = ACC_JWT_CONFIG;
+  return jwt.verify(token, secret) as JwtUserPayload;
 };
 
 const verifyRefreshToken = (token: string): JwtUserPayload => {
-  return jwt.verify(token, REF_JWT_CONFIG.secret) as JwtUserPayload;
+  const { secret } = REF_JWT_CONFIG;
+  return jwt.verify(token, secret) as JwtUserPayload;
 };
 
 export const getAccessTokenUser = (token: string) => {
@@ -35,7 +39,6 @@ export const getAccessTokenUser = (token: string) => {
     const success = false as const;
     const err = error as Error;
     const message = err.message || 'something wrong with access token.';
-    // sendError(res, 401, errMsg);
     return { success, error: { ...err, message } };
   }
 };
@@ -50,7 +53,6 @@ export const getRefreshTokenUser = (token: string) => {
     const success = false as const;
     const err = error as Error;
     const message = err.message || 'something wrong with access token.';
-    // sendError(res, 403, errMsg);
     return { success, error: { ...err, message } };
   }
 };

@@ -1,42 +1,37 @@
-import { EnvVars } from '@/utils/EnvVarConfig.js';
 import { CookieOptions } from 'express';
-import { ACC_JWT_CONFIG, REF_JWT_CONFIG } from './jwtConfig.js';
-import { jwtExpiryToCookieAge, MaxAge } from '../utils/jwtExpiryToCookieAge.js';
+import { jwtExpiryToCookieExpiry } from '../utils/jwtExpiryToCookieExpiry.js';
+import { EnvVars } from '@/utils/EnvVarConfig.js';
+import { ACC_JWT_EXPIRY, REF_JWT_EXPIRY } from './jwtConfig.js';
 
-type CookieConfig = { name: string; options: CookieOptions };
+type MaxAge = CookieOptions['maxAge'];
 
 const { IS_DEV, ACC_COOKIE_NAME, REF_COOKIE_NAME } = EnvVars;
-const IS_PROD = !IS_DEV;
 
-const ACC_COOKIE_AGE: MaxAge = jwtExpiryToCookieAge(
-  ACC_JWT_CONFIG.options.expiresIn
-);
-const REF_COOKIE_AGE: MaxAge = jwtExpiryToCookieAge(
-  REF_JWT_CONFIG.options.expiresIn
-);
+export const ACC_COOKIE_Expiry: MaxAge =
+  jwtExpiryToCookieExpiry(ACC_JWT_EXPIRY);
+export const REF_COOKIE_Expiry: MaxAge =
+  jwtExpiryToCookieExpiry(REF_JWT_EXPIRY);
 
 const COMMON_COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  secure: IS_PROD,
-  sameSite: (IS_PROD ? 'Strict' : 'Lax') as 'strict' | 'lax' | 'none',
+  secure: !IS_DEV,
+  sameSite: (!IS_DEV ? 'Strict' : 'Lax') as 'strict' | 'lax' | 'none',
 };
 
 const ACC_COOKIE_OPTIONS: CookieOptions = {
   ...COMMON_COOKIE_OPTIONS,
-  // maxage: production 15mins, development 5mins
-  maxAge: ACC_COOKIE_AGE,
+  maxAge: ACC_COOKIE_Expiry,
 };
 const REF_COOKIE_OPTIONS: CookieOptions = {
   ...COMMON_COOKIE_OPTIONS,
-  // maxage: production 7days, development 15mins
-  maxAge: REF_COOKIE_AGE,
+  maxAge: REF_COOKIE_Expiry,
 };
 
 export const ACC_COOKIE_CONFIG = {
   name: ACC_COOKIE_NAME,
   options: ACC_COOKIE_OPTIONS,
-} satisfies CookieConfig;
+};
 export const REF_COOKIE_CONFIG = {
   name: REF_COOKIE_NAME,
   options: REF_COOKIE_OPTIONS,
-} satisfies CookieConfig;
+};
