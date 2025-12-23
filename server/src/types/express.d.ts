@@ -1,10 +1,8 @@
-import type { IUserPayload } from '@/features/user/types/user.ts';
+import type { SafeUserObject } from '@/models/user.model.ts';
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: IUserPayload;
-      deviceId?: string;
-    }
+declare module 'express' {
+  interface Request {
+    user?: SafeUserObject;
+    deviceId?: string;
   }
 }
