@@ -1,0 +1,199 @@
+@import 'tailwindcss';
+
+/* :root {
+  --bg-light: 0 0% 0%;
+  --bg: 0 0% 5%;
+  --bg-dark: 0 0% 10%;
+  --text: 0 0% 95%;
+  --text-muted: 0 0% 70%;
+  --border: 0 0% 30%;
+  --border-muted: 0 0% 40%;
+
+  --primary: 0 0% 0%;
+  --secondary: 0 0% 5%;
+  --tertiary: 0 0% 10%;
+  --accent: 0 0% 10%;
+  --muted: 0 0% 30%;
+
+  --success: 0 0% 0%;
+  --warning: 0 0% 0%;
+  --danger: 0 0% 0%;
+  --info: 0 0% 0%;
+
+  --gradient: linear-gradient(0deg, var(--bg) 95%, var(--bg-light));
+  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+  --highlight: hsl(0 0% 60%);
+  --border-card: 1px solid var(--border);
+  --shadow:
+    0px 2px 2px hsla(0%, 0%, 0%, 0.07), 0px 4px 4px hsla(0%, 0%, 0%, 0.15);
+} 
+
+.dark {
+  --bg-light: 0 0% 90%;
+  --bg: 0 0% 95%;
+  --bg-dark: 0 0% 100%;
+  --text: 0 0% 5%;
+  --text-muted: 0 0% 30%;
+  --border: 0 0% 30%;
+  --gradient: linear-gradient(0deg, var(--bg) 95%, var(--bg-light));
+  --gradient-hover: linear-gradient(0deg, var(--bg), var(--bg-light));
+  --highlight: hsl(0 0% 60%);
+  --border-card: 1px solid var(--border);
+  --shadow:
+    0px 2px 2px hsla(0%, 0%, 0%, 0.07), 0px 4px 4px hsla(0%, 0%, 0%, 0.15);
+} */
+
+/* Light Mode */
+:root {
+  --bg: 93.299% 0.01 261.788;
+  --fg: 20% 0.02 261.788;
+
+  --text: 22% 0.015 261.788;
+  --text-muted: 45% 0.015 261.788;
+
+  --card: 98% 0.005 261.788;
+  --card-fg: 22% 0.015 261.788;
+
+  --border: 85% 0.01 261.788;
+  --muted: 92% 0.004 261.788;
+  --muted-fg: 45% 0.015 261.788;
+
+  --chatbody: 97.82% 0.0034 247.86;
+  --message-recieved: 95% 0 0.05;
+  --message-sent: 59% 0.02 239.75;
+
+  --primary: 55% 0.27 262;
+  --primary-fg: 98% 0.01 262;
+
+  --secondary: 88% 0.03 261.788;
+  --secondary-fg: 25% 0.02 261.788;
+
+  --accent: 90% 0.05 250;
+  --accent-fg: 20% 0.02 250;
+
+  --ring: var(--primary);
+
+  --shadow-up:
+    0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-100: 0 0 0 0.25rem rgba(10, 173, 10, 0.25);
+  --shadow-200:
+    0px 2px 5px 2px rgba(145, 158, 171, 0.2),
+    5px 5px 6px 0px rgba(145, 158, 171, 0.14),
+    0px 1px 2px 0px rgba(145, 158, 171, 0.12);
+}
+
+/* Dark Mode */
+.dark {
+  --bg: 18% 0.01 261.788;
+  --fg: 98% 0.01 261.788;
+
+  --text: 96% 0.01 261.788;
+  --text-muted: 80% 0.01 261.788;
+
+  --card: 23% 0.01 261.788;
+  --card-fg: 96% 0.01 261.788;
+
+  --border: 35% 0.01 261.788;
+  --muted: 28% 0.01 261.788;
+  --muted-fg: 80% 0.01 261.788;
+
+  --chatbody: 18% 0.003 0.02;
+  --message-recieved: 25% 0.007 0.04;
+  --message-sent: 100% 0 0;
+
+  --primary: 75% 0.25 262;
+  --primary-fg: 15% 0.02 262;
+
+  --secondary: 32% 0.02 261.788;
+  --secondary-fg: 94% 0.008 261.788;
+
+  --accent: 60% 0.1 250;
+  --accent-fg: 98% 0.01 250;
+
+  --shadow-up:
+    0 -10px 15px -3px rgba(0, 0, 0, 0.35), 0 -4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-100: 0 0 0 0.25rem rgba(10, 173, 10, 0.35);
+  --shadow-200:
+    0px 2px 5px 2px rgba(0, 0, 0, 0.45), 5px 5px 6px 0px rgba(0, 0, 0, 0.35),
+    0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* #f6f8fa chat body */
+/* #f7f7f7 bg */
+/*  chat message other */
+/*  chat message mine */
+
+@theme {
+  --color-white-100: var(--color-white);
+
+  --color-bg: oklch(var(--bg));
+  --color-fg: oklch(var(--fg));
+
+  --color-text: oklch(var(--text));
+  --color-text-muted: oklch(var(--text-muted));
+
+  --color-card: oklch(var(--card));
+  --color-card-fg: oklch(var(--card-fg));
+
+  --color-border: oklch(var(--border));
+  --color-muted: oklch(var(--muted));
+  --color-muted-fg: oklch(var(--muted-fg));
+
+  --color-chatbody: oklch(var(--chatbody));
+  --color-message-recieved: oklch(var(--message-recieved));
+  --color-message-sent: oklch(var(--message-sent));
+
+  --color-primary: oklch(var(--primary));
+  --color-primary-fg: oklch(var(--primary-fg));
+
+  --color-secondary: oklch(var(--secondary));
+  --color-secondary-fg: oklch(var(--secondary-fg));
+
+  --color-accent: oklch(var(--accent));
+  --color-accent-fg: oklch(var(--accent-fg));
+
+  --color-ring: oklch(var(--ring));
+
+  --shadow-up: var(--shadow-up);
+  --shadow-shadow-100: var(--shadow-100);
+  --shadow-shadow-200: var(--shadow-200);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  @apply scheme-light dark:scheme-dark;
+}
+
+@utility slide-hidden {
+  &::-webkit-scrollbar {
+    @apply h-0 w-0;
+  }
+  &::-webkit-scrollbar-track {
+    @apply rounded-md bg-gray-300;
+  }
+  &::-webkit-scrollbar-thumb {
+    @apply rounded-md bg-green-500;
+  }
+}
+
+@utility slide-thin {
+  &::-webkit-scrollbar {
+    @apply h-1.5 w-1.5;
+  }
+  &::-webkit-scrollbar-track {
+    @apply rounded-md bg-transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    @apply rounded-md bg-gray-500 transition-colors duration-200 ease-in-out;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-700;
+  }
+  &::-webkit-scrollbar-thumb:active {
+    @apply bg-gray-900;
+  }
+  &::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
+}
