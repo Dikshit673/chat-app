@@ -15,4 +15,4 @@ const comparePassword = async (password: string, hash: string) => {
   return isMatch;
 };
 
-export { generateSalt, hashPassword, comparePassword };
+export { comparePassword, generateSalt, hashPassword };
