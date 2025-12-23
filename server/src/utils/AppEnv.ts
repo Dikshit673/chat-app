@@ -28,10 +28,10 @@ export const envSchema = z.object({
   REF_COOKIE_NAME: z.string(),
 
   // URLs
-  CLIENT_URL: z.url(),
+  FRONTEND_URL: z.url(),
 });
 
-export type EnvVarsType = z.infer<typeof envSchema>;
+export type AppEnvType = z.infer<typeof envSchema>;
 
 const parsed = envSchema.safeParse(process.env);
 
@@ -47,6 +47,6 @@ const _env = parsed.data;
 
 const IS_DEV = _env.NODE_ENV === 'development';
 
-const EnvVars = { ..._env, IS_DEV };
+const AppEnv = { ..._env, IS_DEV };
 
-export { EnvVars };
+export { AppEnv };

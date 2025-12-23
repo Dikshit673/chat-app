@@ -1,17 +1,17 @@
 export class ApiResponse<T = unknown> {
-  public statusCode: number;
-  public message: string;
-  public data: T | null;
   public success: boolean;
+  public message: string;
+  public statusCode: number;
+  public data: T | null;
 
   constructor(
     statusCode: number,
     message: string = 'Success',
     data: T | null = null
   ) {
-    this.statusCode = statusCode;
-    this.message = message;
-    this.data = data;
     this.success = statusCode >= 200 && statusCode < 300;
+    this.message = message;
+    this.statusCode = statusCode;
+    this.data = data;
   }
 }
