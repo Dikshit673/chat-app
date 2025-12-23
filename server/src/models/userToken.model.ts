@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 
+import { USER_TOKEN_MODEL_NAME } from '@/constants.js';
+
 const userTokenSchema = new Schema(
   {
     userId: {
@@ -26,4 +28,4 @@ const userTokenSchema = new Schema(
 userTokenSchema.index({ userId: 1, deviceId: 1 }, { unique: true });
 userTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-export const UserToken = model('userToken', userTokenSchema);
+export const UserToken = model(USER_TOKEN_MODEL_NAME, userTokenSchema);
