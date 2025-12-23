@@ -1,9 +1,10 @@
+import { NextFunction, Request, Response } from 'express';
+
 import {
   generateDeviceId,
   getDeviceId,
   setDeviceIdCookie,
-} from '@/features/auth/utils/deviceIdUtil.js';
-import { NextFunction, Request, Response } from 'express';
+} from '@/utils/auth/deviceIdUtil.js';
 
 export const deviceIdMiddleware =
   () => (req: Request, res: Response, next: NextFunction) => {
