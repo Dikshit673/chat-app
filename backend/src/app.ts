@@ -5,9 +5,9 @@ import express, { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
 
+import { AppEnv } from '@/lib/AppEnv.js';
 import { deviceIdMiddleware } from '@/middlewares/deviceId.middleware.js';
 import { authRoutes } from '@/routes/auth.route.js';
-import { AppEnv } from '@/utils/AppEnv.js';
 import { sendApiResponse } from '@/utils/helpers/sendResponse.js';
 
 import { connectDB } from './lib/db.js';

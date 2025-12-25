@@ -2,8 +2,8 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 
 import { app } from './app.js';
+import { AppEnv } from './lib/AppEnv.js';
 import initSocket from './socket/initSocket.js';
-import { AppEnv } from './utils/AppEnv.js';
 
 const { PORT, FRONTEND_URL } = AppEnv;
 

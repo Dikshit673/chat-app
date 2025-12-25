@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { AppEnv } from '@/utils/AppEnv.js';
+import { AppEnv } from '@/lib/AppEnv.js';
 
 const { MONGODB_URI, MONGODB_DB_NAME, MONGODB_AUTH_SOURCE } = AppEnv;
 

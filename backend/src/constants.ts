@@ -1,7 +1,7 @@
 import { SignOptions } from 'jsonwebtoken';
 import ms from 'ms';
 
-import { AppEnv } from './utils/AppEnv.js';
+import { AppEnv } from './lib/AppEnv.js';
 
 type ExpiresIn = SignOptions['expiresIn'];
 
