@@ -1,7 +1,7 @@
 import { CookieOptions, Response } from 'express';
 
 import { ACC_COOKIE_Expiry, REF_COOKIE_Expiry } from '@/constants.js';
-import { AppEnv } from '@/utils/AppEnv.js';
+import { AppEnv } from '@/lib/AppEnv.js';
 
 const { IS_DEV, ACC_COOKIE_NAME, REF_COOKIE_NAME } = AppEnv;
 

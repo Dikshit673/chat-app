@@ -1,8 +1,8 @@
 import jwt, { type JwtPayload, SignOptions } from 'jsonwebtoken';
 
 import { ACC_JWT_EXPIRY, REF_JWT_EXPIRY } from '@/constants.js';
+import { AppEnv } from '@/lib/AppEnv.js';
 import { SafeUserObject } from '@/models/user.model.js';
-import { AppEnv } from '@/utils/AppEnv.js';
 
 const { ACC_JWT_SECRET, REF_JWT_SECRET } = AppEnv;
 

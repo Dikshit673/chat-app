@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { CookieOptions, Request, Response } from 'express';
 import z from 'zod';
 
-import { AppEnv } from '@/utils/AppEnv.js';
+import { AppEnv } from '@/lib/AppEnv.js';
 
 const IS_PROD = !AppEnv.IS_DEV;
 const DEVICE_ID_COOKIE: { name: string; options: CookieOptions } = {

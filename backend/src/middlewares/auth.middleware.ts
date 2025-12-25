@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { AppEnv } from '@/utils/AppEnv.js';
+import { AppEnv } from '@/lib/AppEnv.js';
 import {
   getAccessTokenUser,
   getRefreshTokenUser,
