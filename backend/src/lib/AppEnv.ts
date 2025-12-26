@@ -23,10 +23,6 @@ export const envSchema = z.object({
   ACC_JWT_SECRET: z.string(),
   REF_JWT_SECRET: z.string(),
 
-  // Cookies
-  ACC_COOKIE_NAME: z.string(),
-  REF_COOKIE_NAME: z.string(),
-
   // URLs
   FRONTEND_URL: z.url(),
 });

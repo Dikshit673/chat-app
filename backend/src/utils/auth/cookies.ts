@@ -1,24 +1,29 @@
 import { CookieOptions, Response } from 'express';
 
-import { ACC_COOKIE_Expiry, REF_COOKIE_Expiry } from '@/constants.js';
+import {
+  ACC_COOKIE_NAME,
+  ACCESS_EXPIRY_MS,
+  REF_COOKIE_NAME,
+  REFRESH_EXPIRY_MS,
+} from '@/constants.js';
 import { AppEnv } from '@/lib/AppEnv.js';
 
-const { IS_DEV, ACC_COOKIE_NAME, REF_COOKIE_NAME } = AppEnv;
+const IS_PROD = !AppEnv.IS_DEV;
 
 // ============================== Configs ==============================
-const COMMON_COOKIE_OPTIONS: CookieOptions = {
+export const COMMON_COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  secure: !IS_DEV,
-  sameSite: (!IS_DEV ? 'Strict' : 'Lax') as 'strict' | 'lax' | 'none',
+  secure: IS_PROD,
+  sameSite: IS_PROD ? 'strict' : 'lax',
 };
 
 const ACC_COOKIE_OPTIONS: CookieOptions = {
   ...COMMON_COOKIE_OPTIONS,
-  maxAge: ACC_COOKIE_Expiry,
+  maxAge: ACCESS_EXPIRY_MS,
 };
 const REF_COOKIE_OPTIONS: CookieOptions = {
   ...COMMON_COOKIE_OPTIONS,
-  maxAge: REF_COOKIE_Expiry,
+  maxAge: REFRESH_EXPIRY_MS,
 };
 
 const ACC_COOKIE_CONFIG = {

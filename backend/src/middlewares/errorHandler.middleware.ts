@@ -1,8 +1,8 @@
 // middlewares/error.middleware.ts
 import { NextFunction, Request, Response } from 'express';
 
-import { ApiError } from '@/utils/helpers/ApiError.js';
-import { sendApiResponse } from '@/utils/helpers/sendResponse.js';
+import { ApiError } from '@/utils/ApiError.js';
+import { sendApiResponse } from '@/utils/sendResponse.js';
 
 export const errorHandler = (
   _err: ApiError,

@@ -1,38 +1,38 @@
-import z from 'zod';
-
-import { AppEnv } from '@/lib/AppEnv.js';
-import { getRefreshTokenUser, issueAccessToken } from '@/utils/auth/tokens.js';
-import { asyncHandler } from '@/utils/helpers/asyncHandler.js';
+import { REF_COOKIE_NAME, REFRESH_EXPIRY_MS } from '@/constants.js';
+import { UserToken } from '@/models/userToken.model.js';
+import { asyncHandler } from '@/utils/asyncHandler.js';
+import { setRefreshCookie } from '@/utils/auth/cookies.js';
 import {
-  sendApiResponse,
-  throwApiError,
-} from '@/utils/helpers/sendResponse.js';
-
-const refreshCookieSchema = z
-  .string()
-  .refine((val) => !val || val.length > 0, 'Invalid refresh cookie format');
+  getRefreshTokenUser,
+  issueAccessToken,
+  issueRefreshToken,
+} from '@/utils/auth/tokens.js';
+import { sendApiResponse, throwApiError } from '@/utils/sendResponse.js';
 
 export const refresh = asyncHandler(async (req, res) => {
-  const cookieToken = req.cookies[AppEnv.REF_COOKIE_NAME];
-  const parsedCookies = refreshCookieSchema.safeParse(cookieToken);
+  const deviceId = req.deviceId;
+  if (!deviceId) return throwApiError(403, 'Device id is required.');
 
-  if (!parsedCookies.success) {
-    const err = parsedCookies.error.issues[0];
-    const message = AppEnv.IS_DEV ? err.message : 'Forbidden';
-    return throwApiError(403, message);
-  }
-  const refreshToken = parsedCookies.data;
+  const cookieToken = req.cookies[REF_COOKIE_NAME] as string | undefined;
+  if (!cookieToken) return throwApiError(403, 'Forbidden');
 
-  const refreshData = getRefreshTokenUser(refreshToken);
-  if (!refreshData.success) {
-    const errorMsg = refreshData.error.message || 'Refresh token is invalid.';
-    return throwApiError(403, errorMsg);
-  }
+  const { success, data } = getRefreshTokenUser(cookieToken);
+  if (!success) return throwApiError(403, 'Refresh token is invalid.');
 
-  const refreshUserPayload = refreshData.data.user;
-  const renewedAccessToken = issueAccessToken(refreshUserPayload);
+  const { user } = data;
+  const foundToken = await UserToken.findOne({ userId: user._id, deviceId });
+  if (!foundToken) return throwApiError(403, 'Refresh token is invalid.');
 
+  const accessToken = issueAccessToken(user);
+  const refreshToken = issueRefreshToken(user);
+  const expiresAt = new Date(Date.now() + REFRESH_EXPIRY_MS);
+
+  foundToken.token = refreshToken;
+  foundToken.expiresAt = expiresAt;
+  await foundToken.save();
+
+  setRefreshCookie(res, refreshToken);
   return sendApiResponse(res, 200, 'refreshed auth token successfully', {
-    jwtToken: renewedAccessToken,
+    jwtToken: accessToken,
   });
 });

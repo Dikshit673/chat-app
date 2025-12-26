@@ -1,68 +1,80 @@
+import { HydratedDocument, Model, model, Schema } from 'mongoose';
+
 import {
-  HydratedDocument,
-  InferSchemaType,
-  Model,
-  model,
-  Schema,
-  Types,
-} from 'mongoose';
+  SALT_ROUNDS,
+  USER_MODEL_NAME,
+  USER_ROLES,
+  UserRolesType,
+} from '@/constants.js';
+import { comparePassword, generateSalt, hashPassword } from '@/lib/bcrypt.js';
 
-import { USER_MODEL_NAME } from '@/constants.js';
-
-/* 1️⃣ Pure schema data */
-export interface IUser {
+/* 1️⃣ types */
+interface IUser {
   name: string;
   email: string;
   password: string;
-  role: 'user' | 'admin';
+  role: UserRolesType;
   profilePic?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-type UserObject = InferSchemaType<typeof userSchema>;
-
-type UserObjectWithId = UserObject & {
-  _id: Types.ObjectId;
+type UserObjectWithId = IUser & {
+  _id: string;
 };
 
 export type SafeUserObject = Omit<UserObjectWithId, 'password'>;
 
-/* 2️⃣ Methods */
-export interface UserMethods {
+// Methods types
+interface UserMethods {
   toSafeObject(): SafeUserObject;
+  isPasswordMatch(password: string): Promise<boolean>;
 }
 
-/* 3️⃣ Document */
-export type UserDocument = HydratedDocument<IUser, UserMethods>;
+// Document type
+type UserDocument = HydratedDocument<IUser, UserMethods>;
 
-/* 4️⃣ Model */
-export interface IUserModel extends Model<IUser, object, UserMethods> {
+// Model types
+interface IUserModel extends Model<IUser, object, UserMethods> {
   findByEmail(email: string): Promise<UserDocument | null>;
 }
 
-/* 5️⃣ Schema */
+/* 2️⃣ Schema */
 const userSchema = new Schema<IUser, IUserModel, UserMethods>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    role: { type: String, enum: USER_ROLES, default: 'USER' },
     profilePic: { type: String, default: '' },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    statics: {
+      findByEmail: function (email: string) {
+        return this.findOne({ email });
+      },
+    },
+    methods: {
+      toSafeObject: function () {
+        const { password, _id, __v, ...user } = this.toObject();
+        const newUser = { ...user, _id: _id.toString() };
+        return newUser;
+      },
+      isPasswordMatch: async function (password: string) {
+        const isMatch = await comparePassword(password, this.password);
+        return isMatch;
+      },
+    },
+  }
 );
 
-/* 6️⃣ Static */
-userSchema.static('findByEmail', function (email: string) {
-  return this.findOne({ email });
+/* 3️⃣ Hook */
+userSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+  const salt = await generateSalt(SALT_ROUNDS);
+  this.password = await hashPassword(this.password, salt);
 });
 
-/* 7️⃣ Method */
-userSchema.method('toSafeObject', function () {
-  const { password, __v, ...user } = this.toObject();
-  return user;
-});
-
-/* 8️⃣ Model */
+/* 4️⃣ Model */
 export const User = model<IUser, IUserModel>(USER_MODEL_NAME, userSchema);

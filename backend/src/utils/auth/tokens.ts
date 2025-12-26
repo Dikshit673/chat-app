@@ -1,6 +1,6 @@
 import jwt, { type JwtPayload, SignOptions } from 'jsonwebtoken';
 
-import { ACC_JWT_EXPIRY, REF_JWT_EXPIRY } from '@/constants.js';
+import { ACCESS_EXPIRY_MS, REFRESH_EXPIRY_MS } from '@/constants.js';
 import { AppEnv } from '@/lib/AppEnv.js';
 import { SafeUserObject } from '@/models/user.model.js';
 
@@ -8,10 +8,10 @@ const { ACC_JWT_SECRET, REF_JWT_SECRET } = AppEnv;
 
 // ============================== Configs ==============================
 const ACC_JWT_OPTIONS: SignOptions = {
-  expiresIn: ACC_JWT_EXPIRY,
+  expiresIn: ACCESS_EXPIRY_MS,
 };
 const REF_JWT_OPTIONS: SignOptions = {
-  expiresIn: REF_JWT_EXPIRY,
+  expiresIn: REFRESH_EXPIRY_MS,
 };
 
 const ACC_JWT_CONFIG = {

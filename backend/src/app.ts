@@ -1,4 +1,3 @@
-// -------------------- Core & Libs --------------------
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Request, Response } from 'express';
@@ -8,7 +7,7 @@ import path from 'path';
 import { AppEnv } from '@/lib/AppEnv.js';
 import { deviceIdMiddleware } from '@/middlewares/deviceId.middleware.js';
 import { authRoutes } from '@/routes/auth.route.js';
-import { sendApiResponse } from '@/utils/helpers/sendResponse.js';
+import { sendApiResponse } from '@/utils/sendResponse.js';
 
 import { connectDB } from './lib/db.js';
 import { errorHandler } from './middlewares/errorHandler.middleware.js';
@@ -21,18 +20,12 @@ connectDB();
 const app = express();
 
 // -------------------- Global Middlewares --------------------
+app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 app.use(cookieParser());
 app.use(deviceIdMiddleware());
-
-app.use(
-  cors({
-    origin: FRONTEND_URL,
-    credentials: true,
-  })
-);
 
 // -------------------- Rate Limiting (API only) --------------------
 const limiter = (max: number = 20) =>
