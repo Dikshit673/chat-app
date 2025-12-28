@@ -56,7 +56,7 @@ app.get('/ping', (_req: Request, res: Response) =>
 app.use('/api/v1/auth', authRoutes);
 
 // -------------------- Error Handling --------------------
-app.use(errorHandler);
+app.use(errorHandler());
 
 // -------------------- Exports --------------------
 export { app };

@@ -5,11 +5,26 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  js.configs.recommended,
-  tseslint.configs.recommended,
-  { 
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], 
-    languageOptions: { 
+   // ------------------- JS files --------------------
+  {
+    extends: [js.configs.recommended],
+    files: ['**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+  },
+  // ------------------ TS files config --------------------
+  {
+    files: ['**/*.{ts,mts,cts}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+    ],
+    languageOptions: {
       globals: globals.node,
       parserOptions: {
         ecmaVersion: 'latest',
@@ -18,37 +33,24 @@ export default defineConfig([
     },
     plugins: {
       'simple-import-sort': simpleImportSort,
-    }, 
-    // extends: [
-      // 'eslint:recommended',               // ESLint recommended rules
-      // 'plugin:@typescript-eslint/recommended', // TS recommended rules
-      // 'plugin:prettier/recommended'       // Prettier integration
-    // ],
-    rules:{
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["off"],
+    },
+    rules: {
+      // Disable base rule in favor of TS
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
       'simple-import-sort/imports': [
         'warn',
         {
           groups: [
-            // Node.js builtins
-            ['^node:'],
-
-            // External packages
-            ['^@?\\w'],
-
-            // Absolute imports (aliases)
-            ['^@/'],
-
-            // Relative imports
-            ['^\\.'],
-
-            // Side effect imports
-            ['^\\u0000'],
+            ['^node:'],        // Node built-ins
+            ['^@?\\w'],        // External packages
+            ['^@/'],           // Aliases
+            ['^\\.'],          // Relative
+            ['^\\u0000'],      // Side effects
           ],
         },
       ],
-      'simple-import-sort/exports': 'warn',
-    }
+      'simple-import-sort/exports':[ 'warn'],
+    },
   },
 ]);

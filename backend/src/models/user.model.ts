@@ -44,17 +44,19 @@ const userSchema = new Schema<IUser, IUserModel, UserMethods>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, minLength: 6 },
     role: { type: String, enum: USER_ROLES, default: 'USER' },
     profilePic: { type: String, default: '' },
   },
   {
     timestamps: true,
+    /* 3️⃣ Statics */
     statics: {
       findByEmail: function (email: string) {
         return this.findOne({ email });
       },
     },
+    /* 4️⃣  Methods */
     methods: {
       toSafeObject: function () {
         const { password, _id, __v, ...user } = this.toObject();
@@ -69,12 +71,12 @@ const userSchema = new Schema<IUser, IUserModel, UserMethods>(
   }
 );
 
-/* 3️⃣ Hook */
+/* 5️⃣ Hook */
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   const salt = await generateSalt(SALT_ROUNDS);
   this.password = await hashPassword(this.password, salt);
 });
 
-/* 4️⃣ Model */
+/* 6️⃣ Model */
 export const User = model<IUser, IUserModel>(USER_MODEL_NAME, userSchema);

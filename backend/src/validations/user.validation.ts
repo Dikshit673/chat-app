@@ -1,13 +1,13 @@
 import z from 'zod';
 
-export const registerSchema = z.object({
+export const registerUserSchema = z.object({
   name: z.string(),
   email: z.email(),
   password: z.string().min(6),
   profilePic: z.string().optional().default(''),
 });
 
-export const loginSchema = z.object({
+export const loginUserSchema = z.object({
   email: z.email(),
   password: z.string().min(6),
 });
