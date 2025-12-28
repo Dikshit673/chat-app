@@ -1,6 +1,7 @@
 import { tv, type VariantProps } from 'tailwind-variants';
 
 import { Nav } from '@/components/ui';
+
 import { NavigationLinks } from './NavigationData';
 
 const menuTV = tv({

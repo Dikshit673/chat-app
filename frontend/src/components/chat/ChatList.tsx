@@ -1,5 +1,6 @@
-import { useAppSelector } from '@/app/hooks';
 import { Link } from 'react-router';
+
+import { useAppSelector } from '@/app/hooks';
 
 export default function ChatList() {
   const rooms = useAppSelector((s) => s.chat.rooms);

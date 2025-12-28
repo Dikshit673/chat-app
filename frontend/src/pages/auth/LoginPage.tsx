@@ -1,12 +1,10 @@
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useAppDispatch } from '@/app/hooks';
-
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Heading } from '@/components/ui/Heading';
-import { login } from '@/features/auth/authThunks';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
+
+import { useAppDispatch } from '@/app/hooks';
+import { Button, Heading, Input } from '@/components/ui';
+import { login } from '@/features/auth/authThunks';
 
 type LoginFormData = {
   email: string;

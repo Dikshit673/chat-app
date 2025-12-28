@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { THEME_KEY, useTheme } from './themeSlice';
 
 export const useThemeEffect = () => {

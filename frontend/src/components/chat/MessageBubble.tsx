@@ -1,5 +1,6 @@
-import { formatTime } from '@/utils/formatter';
 import { cn } from 'tailwind-variants';
+
+import { formatTime } from '@/utils/formatter';
 
 type Props = {
   text: string;

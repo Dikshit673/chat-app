@@ -1,5 +1,6 @@
 import { type ComponentProps } from 'react';
 import { cn, tv, type VariantProps } from 'tailwind-variants';
+
 import { Ping, type PingStatusType } from './Ping';
 
 const avatarTV = tv({

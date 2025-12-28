@@ -1,5 +1,7 @@
-import type { AppDispatch } from '@/app/store';
 import type { Socket } from 'socket.io-client';
+
+import type { AppDispatch } from '@/app/store';
+
 import { registerMessageListeners } from './message.listeners';
 import { registerPresenceListeners } from './presence.listeners';
 import { registerTypingListeners } from './typing.listeners';

@@ -1,17 +1,17 @@
 import { AlignJustify, LogOutIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { AvatarPresenter, Card, Nav } from '@/components/ui';
-import { useNavigate } from 'react-router';
-import { NAVBAR_PORTAL_ID, NavigationLinks } from './components/NavigationData';
-import { ThemeToggleButton } from './components/ThemeToggleButton';
-
 import { logout } from '@/features/auth/authThunks';
+
+import { NAVBAR_PORTAL_ID, NavigationLinks } from './components/NavigationData';
 import { NavLogo } from './components/NavLogo';
 import { NavMenu } from './components/NavMenu';
 import { NavModel } from './components/NavModel';
+import { ThemeToggleButton } from './components/ThemeToggleButton';
 
 // =============================== Navbar ===============================
 export const Navbar = () => {

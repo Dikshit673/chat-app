@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
 import type { Message } from './message.types';
 
 const EMPTY_ARRAY: Message[] = [];

@@ -1,7 +1,9 @@
-import { useParams } from 'react-router';
-import { AvatarPresenter } from '../ui';
-import { onlineUsersDummyData, userDummyData } from '@/assets/assets';
 import { Ellipsis } from 'lucide-react';
+import { useParams } from 'react-router';
+
+import { onlineUsersDummyData, userDummyData } from '@/assets/assets';
+
+import { AvatarPresenter } from '../ui';
 
 const ChatHeader = () => {
   const { chatId } = useParams();

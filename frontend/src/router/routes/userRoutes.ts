@@ -1,13 +1,12 @@
 /* @refresh reset */
 
-import LazyElement from '@/components/helpers/LazyElement';
-import { UserPrivateGuard, UserPublicGuard } from '@/router/guard';
 import { createElement, lazy } from 'react';
 import type { RouteObject } from 'react-router';
 
+import LazyElement from '@/components/helpers/LazyElement';
 import AuthLayout from '@/layouts/AuthLayout';
 import MainLayout from '@/layouts/MainLayout';
-// import ChatLayout from '@/layouts/ChatLayout';
+import { UserPrivateGuard, UserPublicGuard } from '@/router/guard';
 
 const SignupPage = lazy(() => import('@/pages/auth/SignupPage'));
 const LoginPage = lazy(() => import('@/pages/auth/LoginPage'));

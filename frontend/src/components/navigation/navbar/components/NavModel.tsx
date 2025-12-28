@@ -1,4 +1,5 @@
 import { Model } from '@/components/ui';
+
 import { NAVBAR_PORTAL_ID } from './NavigationData';
 
 type Props = {

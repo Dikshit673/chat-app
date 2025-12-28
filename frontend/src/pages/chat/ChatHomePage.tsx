@@ -1,5 +1,3 @@
-// import ChatList from '@/components/chat/ChatList';
-
 import { MessageSquare } from 'lucide-react';
 
 export default function ChatHomePage() {

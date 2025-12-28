@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router';
+
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { SocketProvider } from './contexts/socket/SocketProvider';
 import { checkMe } from './features/auth/authThunks';

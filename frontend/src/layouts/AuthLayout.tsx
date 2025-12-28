@@ -1,5 +1,6 @@
-import { Card } from '@/components/ui';
 import { Outlet } from 'react-router';
+
+import { Card } from '@/components/ui';
 
 const AuthLayout = () => {
   return (

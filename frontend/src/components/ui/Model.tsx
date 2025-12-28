@@ -1,4 +1,3 @@
-import { cn } from 'tailwind-variants';
 import type {
   ComponentProps,
   Dispatch,
@@ -6,6 +5,7 @@ import type {
   SetStateAction,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { cn } from 'tailwind-variants';
 
 type ModelProps = ComponentProps<'div'> & {
   id: string;

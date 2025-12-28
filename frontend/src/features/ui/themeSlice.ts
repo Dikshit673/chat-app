@@ -1,5 +1,6 @@
-import { useAppSelector } from '@/app/hooks';
 import { createSlice } from '@reduxjs/toolkit';
+
+import { useAppSelector } from '@/app/hooks';
 
 type Theme = 'light' | 'dark';
 

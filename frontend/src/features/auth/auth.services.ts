@@ -7,7 +7,7 @@ import type {
   RegisterPayload,
   RegisterResponse,
 } from '@/features/auth/auth.types';
-import API from '@/services/api';
+import { API } from '@/services/api';
 
 const authuri = '/api/v1/auth';
 

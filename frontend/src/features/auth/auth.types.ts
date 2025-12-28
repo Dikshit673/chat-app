@@ -9,7 +9,7 @@ export type AuthState = {
   error?: string | null;
 };
 
-// ============================================= API PAYLOADS ==================================
+// =============================== API PAYLOADS ==================================
 export type RegisterPayload = {
   name: string;
   email: string;

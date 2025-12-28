@@ -1,6 +1,7 @@
-import { Button, Card, Heading } from '@/components/ui';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
+
+import { Button, Card, Heading } from '@/components/ui';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();

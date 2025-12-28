@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
+
+import { No_Network_Response, No_Server_Response } from './auth.constants';
 import {
   checkMeService,
   loginUserService,
@@ -8,8 +10,8 @@ import {
   registerUserService,
 } from './auth.services';
 import type {
-  CheckMeResponse,
   ApiResponseError,
+  CheckMeResponse,
   LoginPayload,
   LoginResponse,
   LogoutResponse,
@@ -17,7 +19,6 @@ import type {
   RegisterPayload,
   RegisterResponse,
 } from './auth.types';
-import { No_Network_Response, No_Server_Response } from './auth.constants';
 
 // register
 export const register = createAsyncThunk<

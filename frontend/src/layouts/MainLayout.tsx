@@ -1,8 +1,7 @@
+import { Outlet } from 'react-router';
+
 import { Sidebar } from '@/components/navigation/sidebar';
 import { Card } from '@/components/ui';
-import { Outlet } from 'react-router';
-// import { Sidebar } from '@/components/navigation/sidebar';
-// import Topbar from '@/components/navigation/Topbar';
 
 const MainLayout = () => {
   return (

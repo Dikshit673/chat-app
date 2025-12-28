@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
 import type { Chat } from './chat.types';
 
 const chatSlice = createSlice({

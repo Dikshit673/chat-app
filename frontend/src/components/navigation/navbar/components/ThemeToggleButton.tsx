@@ -1,9 +1,10 @@
 // import { type ComponentProps } from 'react';
-import { Button } from '@/components/ui';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { toggleTheme } from '@/features/ui/themeSlice';
 import { MoonStar, Sun } from 'lucide-react';
 import { useCallback } from 'react';
+
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Button } from '@/components/ui';
+import { toggleTheme } from '@/features/ui/themeSlice';
 
 // type ThemeButtonProps = ComponentProps<'button'>;
 

@@ -1,4 +1,5 @@
 import { Card } from '@/components/ui';
+
 import AllContacts from './components/AllContacts';
 import OnlineContacts from './components/OnlineContacts';
 import SearchContacts from './components/SearchContacts';

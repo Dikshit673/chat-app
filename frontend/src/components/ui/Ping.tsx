@@ -1,5 +1,5 @@
-import { tv, type VariantProps, cn } from 'tailwind-variants';
 import type { ComponentProps } from 'react';
+import { cn, tv, type VariantProps } from 'tailwind-variants';
 
 const pingTV = tv({
   slots: {

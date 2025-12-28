@@ -1,6 +1,7 @@
-import LazyElement from '@/components/helpers/LazyElement';
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router';
+
+import LazyElement from '@/components/helpers/LazyElement';
 
 const NotFoundPage = lazy(() => import('@/pages/errors/NotFoundPage'));
 

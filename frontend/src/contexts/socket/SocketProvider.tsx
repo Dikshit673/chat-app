@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { SocketContext } from './SocketContext';
+import { io, type Socket } from 'socket.io-client';
 
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { AppEnvs } from '@/utils/AppEnvs';
-import { io, type Socket } from 'socket.io-client';
+
 import { registerAllListeners } from './listeners';
+import { SocketContext } from './SocketContext';
 
 const BASE_URL = AppEnvs.VITE_API_URL;
 
@@ -17,9 +18,9 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     if (!token) return;
 
     const newSocket = io(BASE_URL, {
-      auth: { token },
-      transports: ['websocket'],
-      reconnection: true,
+      // auth: { token },
+      withCredentials: true,
+      autoConnect: false,
     });
 
     const handleConnect = () => {

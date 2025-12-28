@@ -1,8 +1,8 @@
-import { storage } from '@/utils/storage';
 import { createSlice } from '@reduxjs/toolkit';
-import type { AuthUser } from './auth.types';
 
-import { JWT_TOKEN_KEY } from './auth.constants';
+import { AUTH_STATE_COOKIE_NAME } from '@/constants';
+
+import type { AuthUser } from './auth.types';
 import { checkMe, login, logout, refresh, register } from './authThunks';
 
 interface AuthState {
@@ -13,14 +13,22 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
-const loadTokenFromLS = () => {
-  const token = storage.get<string | null>(JWT_TOKEN_KEY, null);
-  return token;
+const loadAuthState = () => {
+  const cookies = document.cookie.split('; ');
+  const stateCookie = cookies.find((cookie) => {
+    const [name] = cookie.split('=');
+    return name === AUTH_STATE_COOKIE_NAME;
+  });
+
+  if (!stateCookie) return false;
+  const [_, value] = stateCookie.split('=');
+  if (value !== 'true') return false;
+  return true;
 };
 
 const initialState: AuthState = {
-  isAuthenticated: false, //TODO; initial false
-  token: loadTokenFromLS(),
+  isAuthenticated: loadAuthState(), //TODO; initial false
+  token: null,
   user: null,
   loading: false,
   error: null,
@@ -45,14 +53,12 @@ const authSlice = createSlice({
         s.user = user;
         s.token = jwtToken;
         s.isAuthenticated = true;
-        storage.set(JWT_TOKEN_KEY, jwtToken);
       })
       .addCase(register.rejected, (s, { payload }) => {
         s.loading = false;
         s.error = payload?.message || 'register failed';
         s.token = null;
         s.isAuthenticated = false;
-        storage.remove(JWT_TOKEN_KEY);
       });
 
     builder
@@ -69,14 +75,12 @@ const authSlice = createSlice({
         s.user = user;
         s.token = jwtToken;
         s.isAuthenticated = true;
-        storage.set(JWT_TOKEN_KEY, jwtToken);
       })
       .addCase(login.rejected, (s, { payload }) => {
         s.loading = false;
         s.error = payload?.message || 'login failed';
         s.token = null;
         s.isAuthenticated = false;
-        storage.remove(JWT_TOKEN_KEY);
       });
 
     builder
@@ -90,7 +94,6 @@ const authSlice = createSlice({
         s.token = null;
         s.user = null;
         s.isAuthenticated = false;
-        storage.remove(JWT_TOKEN_KEY);
       })
       .addCase(logout.rejected, (s, { payload }) => {
         s.loading = false;
@@ -108,13 +111,11 @@ const authSlice = createSlice({
         const { jwtToken } = data;
         s.loading = false;
         s.token = jwtToken;
-        storage.set(JWT_TOKEN_KEY, jwtToken);
       })
       .addCase(refresh.rejected, (s, { payload }) => {
         s.loading = false;
         s.error = payload?.message || 'refresh failed';
         s.token = null;
-        storage.remove(JWT_TOKEN_KEY);
       });
 
     builder

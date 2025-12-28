@@ -1,11 +1,10 @@
-import { useAppDispatch } from '@/app/hooks';
-import { Button } from '@/components/ui/Button';
-import { Heading } from '@/components/ui/Heading';
-import { Input } from '@/components/ui/Input';
-import { register } from '@/features/auth/authThunks';
 import { useCallback, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
+
+import { useAppDispatch } from '@/app/hooks';
+import { Button, Heading, Input } from '@/components/ui';
+import { register } from '@/features/auth/authThunks';
 
 type SignupFormData = {
   name: string;

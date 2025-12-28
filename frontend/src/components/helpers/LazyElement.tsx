@@ -1,4 +1,4 @@
-import { Suspense, type ComponentType } from 'react';
+import { type ComponentType, Suspense } from 'react';
 
 export const LazyElement = (Component: ComponentType) => (
   <Suspense fallback={<div className='p-4 text-center'>Loading...</div>}>

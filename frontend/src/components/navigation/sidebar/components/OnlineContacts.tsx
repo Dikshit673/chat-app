@@ -1,6 +1,7 @@
+import { useNavigate } from 'react-router';
+
 import { onlineUsersDummyData, userDummyData } from '@/assets/assets';
 import { AvatarPresenter, Heading } from '@/components/ui';
-import { useNavigate } from 'react-router';
 
 const OnlineContactsPresenter = () => {
   const navigate = useNavigate();

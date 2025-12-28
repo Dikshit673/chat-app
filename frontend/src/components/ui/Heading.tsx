@@ -1,6 +1,6 @@
 // Heading.tsx
-import { memo } from 'react';
 import type { ComponentPropsWithRef } from 'react';
+import { memo } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const headingTV = tv({
