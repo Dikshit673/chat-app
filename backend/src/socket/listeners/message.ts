@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
-import { Message } from '@/models/message.model.js';
+import { MessageModel } from '@/models/message.model.js';
 
 import {
   DeleteMessagePayload,
@@ -10,6 +10,7 @@ import {
   UpdateMessagePayload,
 } from '../socket.types.js';
 
+// todo: remove direct access of mongodb model and add query to do the job
 export default function registerMessageHandlers(
   io: Server,
   socket: Socket,
@@ -17,11 +18,11 @@ export default function registerMessageHandlers(
 ) {
   const user = socket.user;
   if (!user) return;
-  const userId = user._id.toString();
+  const userId = user.id.toString();
 
   // 📦 deliver pending messages
   (async () => {
-    const pending = await Message.find({
+    const pending = await MessageModel.find({
       recieverId: userId,
       status: 'sent',
     });
@@ -38,7 +39,7 @@ export default function registerMessageHandlers(
     const { recieverId, text } = payload;
     const receiverSocketId = onlineUsers.get(recieverId.toString());
     if (!receiverSocketId) return;
-    const msg = await Message.create({
+    const msg = await MessageModel.create({
       senderId: userId,
       recieverId: receiverSocketId,
       text: text,
@@ -54,7 +55,7 @@ export default function registerMessageHandlers(
 
   // 👁️ read
   socket.on('message:read', async ({ messageIds }: ReadMessagePayload) => {
-    await Message.updateMany(
+    await MessageModel.updateMany(
       { _id: { $in: messageIds }, recieverId: userId },
       { status: 'read' }
     );
@@ -64,7 +65,10 @@ export default function registerMessageHandlers(
   socket.on(
     'message:update',
     async ({ messageId, text }: UpdateMessagePayload) => {
-      const msg = await Message.findOne({ _id: messageId, senderId: userId });
+      const msg = await MessageModel.findOne({
+        _id: messageId,
+        senderId: userId,
+      });
       if (!msg) return;
 
       msg.text = text;
@@ -78,7 +82,10 @@ export default function registerMessageHandlers(
 
   // 🗑️ delete
   socket.on('message:delete', async ({ messageId }: DeleteMessagePayload) => {
-    const msg = await Message.findOne({ _id: messageId, senderId: userId });
+    const msg = await MessageModel.findOne({
+      _id: messageId,
+      senderId: userId,
+    });
     if (!msg) return;
 
     await msg.deleteOne();

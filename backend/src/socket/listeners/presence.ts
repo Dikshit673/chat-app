@@ -9,7 +9,7 @@ export default function registerPresenceHandlers(
 ) {
   const user = socket.user;
   if (!user) return;
-  const userId = user._id.toString();
+  const userId = user.id.toString();
 
   onlineUsers.set(userId, socket.id);
   socket.broadcast.emit('user:online', { userId });

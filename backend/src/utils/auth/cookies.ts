@@ -1,133 +1,89 @@
 import { CookieOptions, Response } from 'express';
 
-import {
-  ACC_COOKIE_NAME,
-  ACCESS_EXPIRY_MS,
-  AUTH_STATE_COOKIE_NAME,
-  AUTH_STATE_EXPIRY_MS,
-  CSRF_COOKIE_NAME,
-  CSRF_EXPIRY_MS,
-  DEVICE_ID_COOKIE_NAME,
-  DEVICE_ID_EXPIRY_MS,
-  REF_COOKIE_NAME,
-  REFRESH_EXPIRY_MS,
-} from '@/constants.js';
-import { AppEnv } from '@/lib/AppEnv.js';
+import { COOKIE_NAMES, MS_EXPIRY } from '@/constants.js';
+import { AppEnvs } from '@/lib/AppEnvs.js';
 
-const IS_PROD = !AppEnv.IS_DEV;
+const IS_PROD = !AppEnvs.IS_DEV;
 
 // =========================== COMMON COOKIE OPTIONS ========================
-const COMMON_COOKIE_OPTIONS: CookieOptions = {
+const COMMON_OPTIONS = {
   secure: IS_PROD,
   sameSite: IS_PROD ? 'strict' : 'lax',
-};
+} as CookieOptions;
+
+const createOptions = (options: CookieOptions): CookieOptions => options;
 
 // ============================== ACCESS COOKIE ==============================
-const ACC_COOKIE_OPTIONS: CookieOptions = {
+const ACCESS_OPTIONS = createOptions({
   httpOnly: true,
-  ...COMMON_COOKIE_OPTIONS,
-  maxAge: ACCESS_EXPIRY_MS,
-};
-
-const ACC_COOKIE_CONFIG = {
-  name: ACC_COOKIE_NAME,
-  options: ACC_COOKIE_OPTIONS,
-};
+  ...COMMON_OPTIONS,
+  maxAge: MS_EXPIRY.access,
+});
 
 export const setAccessCookie = (res: Response, token: string) => {
-  const { name, options } = ACC_COOKIE_CONFIG;
-  res.cookie(name, token, options);
+  res.cookie(COOKIE_NAMES.access, token, ACCESS_OPTIONS);
 };
 
 export const clearAccessCookies = (res: Response) => {
-  const { name, options } = ACC_COOKIE_CONFIG;
-  res.clearCookie(name, options);
+  res.clearCookie(COOKIE_NAMES.access, ACCESS_OPTIONS);
 };
 
 // ============================== REFRESH COOKIE ==============================
-const REF_COOKIE_OPTIONS: CookieOptions = {
+const REFRESH_OPTIONS = createOptions({
   httpOnly: true,
-  ...COMMON_COOKIE_OPTIONS,
-  maxAge: REFRESH_EXPIRY_MS,
-};
-
-const REF_COOKIE_CONFIG = {
-  name: REF_COOKIE_NAME,
-  options: REF_COOKIE_OPTIONS,
-};
+  ...COMMON_OPTIONS,
+  maxAge: MS_EXPIRY.refresh,
+});
 
 export const setRefreshCookie = (res: Response, token: string) => {
-  const { name, options } = REF_COOKIE_CONFIG;
-  res.cookie(name, token, options);
+  res.cookie(COOKIE_NAMES.refresh, token, REFRESH_OPTIONS);
 };
 
 export const clearRefreshCookies = (res: Response) => {
-  const { name, options } = REF_COOKIE_CONFIG;
-  res.clearCookie(name, options);
+  res.clearCookie(COOKIE_NAMES.refresh, REFRESH_OPTIONS);
 };
 
 // ============================== DEVICE ID COOKIE ==============================
-const DEVICE_ID_COOKIE_OPTIONS: CookieOptions = {
+const DEVICE_ID_OPTIONS = createOptions({
   httpOnly: true,
-  ...COMMON_COOKIE_OPTIONS,
-  maxAge: DEVICE_ID_EXPIRY_MS,
-};
-
-const DEVICE_ID_COOKIE_CONFIG = {
-  name: DEVICE_ID_COOKIE_NAME,
-  options: DEVICE_ID_COOKIE_OPTIONS,
-};
+  ...COMMON_OPTIONS,
+  maxAge: MS_EXPIRY.deviceId,
+});
 
 export const setDeviceIdCookie = (res: Response, token: string) => {
-  const { name, options } = DEVICE_ID_COOKIE_CONFIG;
-  res.cookie(name, token, options);
+  res.cookie(COOKIE_NAMES.deviceId, token, DEVICE_ID_OPTIONS);
 };
 
 export const clearDeviceIdCookies = (res: Response) => {
-  const { name, options } = DEVICE_ID_COOKIE_CONFIG;
-  res.clearCookie(name, options);
+  res.clearCookie(COOKIE_NAMES.deviceId, DEVICE_ID_OPTIONS);
 };
 
 // ============================== CSRF COOKIE ==============================
-const CSRF_COOKIE_OPTIONS: CookieOptions = {
+const CSRF_OPTIONS = createOptions({
   httpOnly: false,
-  ...COMMON_COOKIE_OPTIONS,
-  maxAge: CSRF_EXPIRY_MS,
-};
-
-const CSRF_COOKIE_CONFIG = {
-  name: CSRF_COOKIE_NAME,
-  options: CSRF_COOKIE_OPTIONS,
-};
+  ...COMMON_OPTIONS,
+  maxAge: MS_EXPIRY.csrf,
+});
 
 export const setCsrfCookie = (res: Response, token: string) => {
-  const { name, options } = CSRF_COOKIE_CONFIG;
-  res.cookie(name, token, options);
+  res.cookie(COOKIE_NAMES.csrf, token, CSRF_OPTIONS);
 };
 
 export const clearCsrfCookies = (res: Response) => {
-  const { name, options } = CSRF_COOKIE_CONFIG;
-  res.clearCookie(name, options);
+  res.clearCookie(COOKIE_NAMES.csrf, CSRF_OPTIONS);
 };
 
 // ============================== AUTH STATE COOKIE ==============================
-const AUTH_STATE_COOKIE_OPTIONS: CookieOptions = {
+const AUTH_STATE_OPTIONS = createOptions({
   httpOnly: false,
-  ...COMMON_COOKIE_OPTIONS,
-  maxAge: AUTH_STATE_EXPIRY_MS,
-};
-
-const AUTH_STATE_COOKIE_CONFIG = {
-  name: AUTH_STATE_COOKIE_NAME,
-  options: AUTH_STATE_COOKIE_OPTIONS,
-};
+  ...COMMON_OPTIONS,
+  maxAge: MS_EXPIRY.authState,
+});
 
 export const setAuthStateCookie = (res: Response, token: string) => {
-  const { name, options } = AUTH_STATE_COOKIE_CONFIG;
-  res.cookie(name, token, options);
+  res.cookie(COOKIE_NAMES.authState, token, AUTH_STATE_OPTIONS);
 };
 
 export const clearAuthStateCookies = (res: Response) => {
-  const { name, options } = AUTH_STATE_COOKIE_CONFIG;
-  res.clearCookie(name, options);
+  res.clearCookie(COOKIE_NAMES.authState, AUTH_STATE_OPTIONS);
 };

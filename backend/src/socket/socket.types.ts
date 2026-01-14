@@ -1,11 +1,3 @@
-import { SafeUserObject } from '@/models/user.model.js';
-
-declare module 'socket.io' {
-  interface Socket {
-    user?: SafeUserObject;
-  }
-}
-
 /* ===== In-memory stores ===== */
 export type OnlineUsersMap = Map<string, string>;
 // userId -> socketId (simple version)

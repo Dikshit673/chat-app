@@ -1,11 +1,11 @@
-import { CSRF_COOKIE_NAME, CSRF_HEADER_NAME } from '@/constants.js';
+import { COOKIE_NAMES, HEADER_NAMES } from '@/constants.js';
+import { reqHandler } from '@/utils/functionHandlers.js';
 import { sendApiResponse } from '@/utils/sendResponse.js';
-import { syncHandler } from '@/utils/syncHandler.js';
 
-export const csrfProtection = syncHandler((req, res, next) => {
+export const csrfProtection = reqHandler((req, res, next) => {
   // get csrf token
-  const csrfCookie = req.cookies[CSRF_COOKIE_NAME] as string | undefined;
-  const csrfHeader = req.headers[CSRF_HEADER_NAME];
+  const csrfCookie = req.cookies[COOKIE_NAMES.csrf] as string | undefined;
+  const csrfHeader = req.headers[HEADER_NAMES.csrf];
 
   // check if csrf token is present
   if (!csrfCookie || !csrfHeader)
@@ -16,7 +16,7 @@ export const csrfProtection = syncHandler((req, res, next) => {
     return sendApiResponse(res, 403, 'Invalid CSRF token');
 
   // csrf token is valid
-  return next();
+  next();
 });
 
 // 1️⃣ Authenticate user (cookies)

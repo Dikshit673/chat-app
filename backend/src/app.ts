@@ -1,18 +1,22 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express, { Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
 
-import { AppEnv } from '@/lib/AppEnv.js';
 import { deviceIdMiddleware } from '@/middlewares/deviceId.middleware.js';
-import { authRoutes } from '@/routes/auth.route.js';
+import { globalErrorMiddleware } from '@/middlewares/globalError.middleware.js';
+import { AppEnvs } from '@/shared/configs/AppEnvs.js';
+import { connectDB } from '@/shared/db/mongo.js';
 import { sendApiResponse } from '@/utils/sendResponse.js';
 
-import { connectDB } from './lib/db.js';
-import { errorHandler } from './middlewares/errorHandler.middleware.js';
+import { v1Routes } from './http/v1/index.js';
+import { AuthService } from './modules/auth/auth.service.js';
+import { TokenService } from './modules/auth/token/token.service.js';
+import { UserRepositoryMongo } from './modules/user/user.repository.mongo.js';
+import { RequiredServices } from './types/httpServices.js';
 
-const { FRONTEND_URL } = AppEnv;
+const { FRONTEND_URL } = AppEnvs;
 
 // -------------------- Init --------------------
 connectDB();
@@ -25,7 +29,7 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));
 app.use(cookieParser());
-app.use(deviceIdMiddleware());
+app.use(deviceIdMiddleware);
 
 // -------------------- Rate Limiting (API only) --------------------
 const limiter = (max: number = 20) =>
@@ -35,28 +39,27 @@ const limiter = (max: number = 20) =>
     message: 'Too many requests',
   });
 
-// Soft global protection
-app.use(limiter(1000));
-
-// API protection
-app.use('/api', limiter(100));
-
-// Auth brute-force protection
-app.use('/api/v1/auth', limiter(20));
+app.use(limiter(1000)); // Soft global protection
+app.use('/api', limiter(100)); // API protection
+app.use('/api/v1/auth', limiter(20)); // Auth brute-force protection
 
 // -------------------- Routes --------------------
-app.get('/', (_req: Request, res: Response) =>
-  sendApiResponse(res, 200, 'Hello World!')
-);
+app.get('/', (_, res: Response) => sendApiResponse(res, 200, 'Hello World!'));
 
-app.get('/ping', (_req: Request, res: Response) =>
-  sendApiResponse(res, 200, 'pong')
-);
+app.get('/ping', (_, res: Response) => sendApiResponse(res, 200, 'pong'));
 
-app.use('/api/v1/auth', authRoutes);
+/* ------------------ services ------------------ */
+const userRepo = new UserRepositoryMongo();
+const tokenService = new TokenService();
+const authService = new AuthService(userRepo, tokenService);
+const services: RequiredServices = { authService, tokenService };
+
+/* ---------------- controllers ----------------- */
+
+app.use('/api/v1', v1Routes(services));
 
 // -------------------- Error Handling --------------------
-app.use(errorHandler());
+app.use(globalErrorMiddleware);
 
 // -------------------- Exports --------------------
 export { app };

@@ -2,10 +2,10 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 
 import { app } from './app.js';
-import { AppEnv } from './lib/AppEnv.js';
+import { AppEnvs } from './shared/configs/AppEnvs.js';
 import initSocket from './socket/initSocket.js';
 
-const { PORT, FRONTEND_URL } = AppEnv;
+const { PORT, FRONTEND_URL } = AppEnvs;
 
 // -------------------- HTTP Server Init --------------------
 const httpServer = createServer(app);

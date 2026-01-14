@@ -1,8 +1,9 @@
 import { HydratedDocument, Model, model, Schema } from 'mongoose';
 
 import {
+  MODEL_NAMES,
   SALT_ROUNDS,
-  USER_MODEL_NAME,
+  USER_ROLE_DEFAULT,
   USER_ROLES,
   UserRolesType,
 } from '@/constants.js';
@@ -14,69 +15,64 @@ interface IUser {
   email: string;
   password: string;
   role: UserRolesType;
-  profilePic?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  profilePic: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-type UserObjectWithId = IUser & {
-  _id: string;
+type IUserDocument = HydratedDocument<IUser> & {
+  toSafeObject: () => Omit<IUser, 'password'>;
+  isPasswordMatch: (password: string) => Promise<boolean>;
 };
 
-export type SafeUserObject = Omit<UserObjectWithId, 'password'>;
-
-// Methods types
-interface UserMethods {
-  toSafeObject(): SafeUserObject;
-  isPasswordMatch(password: string): Promise<boolean>;
-}
-
-// Document type
-type UserDocument = HydratedDocument<IUser, UserMethods>;
-
-// Model types
-interface IUserModel extends Model<IUser, object, UserMethods> {
-  findByEmail(email: string): Promise<UserDocument | null>;
-}
+type IUserModel = Model<IUserDocument> & {
+  findByEmail(email: string): Promise<IUserDocument | null>;
+};
 
 /* 2️⃣ Schema */
-const userSchema = new Schema<IUser, IUserModel, UserMethods>(
+const UserSchema = new Schema<IUser, IUserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minLength: 6 },
-    role: { type: String, enum: USER_ROLES, default: 'USER' },
+    role: { type: String, enum: USER_ROLES, default: USER_ROLE_DEFAULT },
     profilePic: { type: String, default: '' },
   },
-  {
-    timestamps: true,
-    /* 3️⃣ Statics */
-    statics: {
-      findByEmail: function (email: string) {
-        return this.findOne({ email });
-      },
-    },
-    /* 4️⃣  Methods */
-    methods: {
-      toSafeObject: function () {
-        const { password, _id, __v, ...user } = this.toObject();
-        const newUser = { ...user, _id: _id.toString() };
-        return newUser;
-      },
-      isPasswordMatch: async function (password: string) {
-        const isMatch = await comparePassword(password, this.password);
-        return isMatch;
-      },
-    },
-  }
+  { timestamps: true }
 );
 
-/* 5️⃣ Hook */
-userSchema.pre('save', async function () {
+/* 3️⃣ Hook */
+UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   const salt = await generateSalt(SALT_ROUNDS);
   this.password = await hashPassword(this.password, salt);
 });
 
-/* 6️⃣ Model */
-export const User = model<IUser, IUserModel>(USER_MODEL_NAME, userSchema);
+/* 4️⃣ Statics */
+UserSchema.statics = {
+  findByEmail: async function (email: string) {
+    return this.findOne({ email });
+  },
+};
+
+/* 5️⃣ Methods */
+UserSchema.methods = {
+  toSafeObject: function () {
+    const { password, _id, __v, ...user } = this.toObject();
+    const newUser = { ...user, id: _id.toString() };
+    return newUser;
+  },
+  isPasswordMatch: async function (password: string) {
+    const isMatch = await comparePassword(password, this.password);
+    return isMatch;
+  },
+};
+
+/* 6️⃣ Index */
+// UserSchema.index({ email: 1 }, { unique: true });
+
+/* 7️⃣ Export */
+export const UserModel2 = model<IUser, IUserModel>(
+  MODEL_NAMES.user,
+  UserSchema
+);

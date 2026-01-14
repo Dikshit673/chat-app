@@ -1,11 +1,11 @@
-import { ACC_COOKIE_NAME } from '@/constants.js';
+import { COOKIE_NAMES, HEADER_NAMES } from '@/constants.js';
 import { getAccessTokenUser } from '@/utils/auth/tokens.js';
+import { reqHandler } from '@/utils/functionHandlers.js';
 import { sendApiResponse } from '@/utils/sendResponse.js';
-import { syncHandler } from '@/utils/syncHandler.js';
 
-export const protectRoute = syncHandler((req, res, next) => {
+export const protectRoute = reqHandler((req, res, next) => {
   // read access token from http only cookies
-  const accessToken = req.cookies[ACC_COOKIE_NAME] as string | undefined;
+  const accessToken = req.cookies[COOKIE_NAMES.access] as string | undefined;
   if (!accessToken) return sendApiResponse(res, 401, 'Unauthorized');
 
   // validate access token
@@ -13,17 +13,18 @@ export const protectRoute = syncHandler((req, res, next) => {
   if (!success) return sendApiResponse(res, 401, 'Unauthorized');
 
   // attach user to request and pass it to next middleware
-  req.user = data.user;
-  return next();
+  req.user = data;
+  next();
 });
 
-export const optionalAuth = syncHandler((req, _, next) => {
-  const accessToken = req.cookies[ACC_COOKIE_NAME] as string | undefined;
+export const optionalAuth = reqHandler((req, _, next) => {
+  console.log(req.headers[HEADER_NAMES.csrf]);
+  const accessToken = req.cookies[COOKIE_NAMES.access] as string | undefined;
   if (!accessToken) return next();
 
   const { success, data } = getAccessTokenUser(accessToken);
   if (!success) return next();
 
-  req.user = data.user;
+  req.user = data;
   next();
 });

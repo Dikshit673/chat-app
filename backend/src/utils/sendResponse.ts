@@ -1,6 +1,5 @@
 import { Response } from 'express';
 
-import { ApiError } from './ApiError.js';
 import { ApiResponse } from './ApiResponse.js';
 
 export const sendApiResponse = <T = unknown>(
@@ -10,8 +9,4 @@ export const sendApiResponse = <T = unknown>(
   data?: T
 ) => {
   res.status(status).json(new ApiResponse(status, message, data || null));
-};
-
-export const throwApiError = (statusCode: number, message: string) => {
-  throw new ApiError(statusCode, message);
 };

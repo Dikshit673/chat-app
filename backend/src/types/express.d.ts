@@ -1,8 +1,8 @@
-import type { SafeUserObject } from '@/models/user.model.ts';
+import { SafeJwtUserPayload } from '@/modules/auth/auth.types.ts';
 
 declare module 'express' {
   interface Request {
-    user?: SafeUserObject;
+    user?: SafeJwtUserPayload;
     deviceId?: string;
   }
 }

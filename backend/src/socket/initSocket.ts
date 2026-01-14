@@ -15,7 +15,7 @@ export default function initSocket(io: Server) {
   io.on('connection', (socket) => {
     const user = socket.user;
     if (!user) return;
-    const userId = user._id.toString();
+    const userId = user.id.toString();
 
     // join personal room
     socket.join(userId);

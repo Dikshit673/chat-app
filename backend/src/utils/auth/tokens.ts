@@ -1,76 +1,67 @@
-import jwt, { type JwtPayload, SignOptions } from 'jsonwebtoken';
+import { randomBytes } from 'crypto';
+import jwt from 'jsonwebtoken';
 
-import { ACCESS_EXPIRY_MS, REFRESH_EXPIRY_MS } from '@/constants.js';
-import { AppEnv } from '@/lib/AppEnv.js';
-import { SafeUserObject } from '@/models/user.model.js';
+import { MS_EXPIRY } from '@/constants.js';
+import { SafeJwtUserPayload } from '@/modules/auth/auth.types.js';
+import { decodedTokenUserSchema } from '@/modules/auth/token/token.service.js';
+import { AppEnvs } from '@/shared/configs/AppEnvs.js';
 
-const { ACC_JWT_SECRET, REF_JWT_SECRET } = AppEnv;
+const { ACC_JWT_SECRET, REF_JWT_SECRET } = AppEnvs;
 
-// ============================== Configs ==============================
-const ACC_JWT_OPTIONS: SignOptions = {
-  expiresIn: ACCESS_EXPIRY_MS,
-};
-const REF_JWT_OPTIONS: SignOptions = {
-  expiresIn: REFRESH_EXPIRY_MS,
-};
+// ============================== Access Token Functions ==============================
 
-const ACC_JWT_CONFIG = {
-  secret: ACC_JWT_SECRET,
-  options: ACC_JWT_OPTIONS,
-};
-const REF_JWT_CONFIG = {
-  secret: REF_JWT_SECRET,
-  options: REF_JWT_OPTIONS,
+type AccessTokenPayload = {
+  id: string;
 };
 
-type JwtUserPayload = JwtPayload & SafeUserObject;
+export const issueAccessToken = (
+  payload: object extends AccessTokenPayload ? object : AccessTokenPayload
+): string => {
+  const tokenPayload = {
+    id: payload.id,
+  } satisfies AccessTokenPayload;
 
-const extractUser = (decodedPayload: JwtUserPayload): SafeUserObject => {
-  const { iat, exp, nbf, jti, aud, iss, sub, ...userPayload } = decodedPayload;
-  return userPayload;
+  return jwt.sign(tokenPayload, ACC_JWT_SECRET, {
+    expiresIn: MS_EXPIRY.access,
+  });
 };
 
-// ============================== Functions ==============================
-export const issueAccessToken = (payload: SafeUserObject): string => {
-  const { secret, options } = ACC_JWT_CONFIG;
-  return jwt.sign(payload, secret, options);
-};
-
-export const issueRefreshToken = (payload: SafeUserObject): string => {
-  const { secret, options } = REF_JWT_CONFIG;
-  return jwt.sign(payload, secret, options);
-};
-
-const verifyAccessToken = (token: string): JwtUserPayload => {
-  const { secret } = ACC_JWT_CONFIG;
-  return jwt.verify(token, secret) as JwtUserPayload;
-};
-
-const verifyRefreshToken = (token: string): JwtUserPayload => {
-  const { secret } = REF_JWT_CONFIG;
-  return jwt.verify(token, secret) as JwtUserPayload;
+const verifyAccessToken = (token: string): SafeJwtUserPayload => {
+  return jwt.verify(token, ACC_JWT_SECRET) as SafeJwtUserPayload;
 };
 
 export const getAccessTokenUser = (token: string) => {
-  try {
-    const payload = verifyAccessToken(token);
-    const user = extractUser(payload);
-    return { success: true, data: { user } } as const;
-  } catch (error) {
-    const err = error as Error;
-    const message = err.message || 'something wrong with access token.';
-    return { success: false, error: { ...err, message } } as const;
-  }
+  const payload = verifyAccessToken(token);
+  return decodedTokenUserSchema.safeParse(payload);
+};
+
+// ============================== Refresh Token Functions ==============================
+
+type RefreshTokenPayload = {
+  id: string;
+};
+
+export const issueRefreshToken = (
+  payload: object extends AccessTokenPayload ? object : AccessTokenPayload
+): string => {
+  const tokenPayload = { id: payload.id } satisfies RefreshTokenPayload;
+  return jwt.sign(tokenPayload, REF_JWT_SECRET, {
+    expiresIn: MS_EXPIRY.refresh,
+  });
+};
+
+const verifyRefreshToken = (token: string): SafeJwtUserPayload => {
+  return jwt.verify(token, REF_JWT_SECRET) as SafeJwtUserPayload;
 };
 
 export const getRefreshTokenUser = (token: string) => {
-  try {
-    const payload = verifyRefreshToken(token);
-    const user = extractUser(payload);
-    return { success: true, data: { user } } as const;
-  } catch (error) {
-    const err = error as Error;
-    const message = err.message || 'something wrong with access token.';
-    return { success: false, error: { ...err, message } } as const;
-  }
+  const payload = verifyRefreshToken(token);
+  return decodedTokenUserSchema.safeParse(payload);
+};
+
+// ============================== CSRF Token Functions ==============================
+
+export const issueCsrfToken = () => {
+  const csrfToken = randomBytes(32).toString('hex');
+  return csrfToken;
 };

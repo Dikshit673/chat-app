@@ -1,7 +1,7 @@
 import cookie from 'cookie';
 import { type ExtendedError, Socket } from 'socket.io';
 
-import { ACC_COOKIE_NAME } from '@/constants.js';
+import { COOKIE_NAMES } from '@/constants.js';
 import { getAccessTokenUser } from '@/utils/auth/tokens.js';
 
 export default function socketAuth(
@@ -12,7 +12,7 @@ export default function socketAuth(
   const cookies = cookie.parse(socket.request.headers.cookie || '');
   console.log(cookies);
 
-  const accessToken = cookies[ACC_COOKIE_NAME];
+  const accessToken = cookies[COOKIE_NAMES.access];
   if (!accessToken) {
     return next(new Error('Unauthorized'));
   }
@@ -21,12 +21,11 @@ export default function socketAuth(
   // const token = socket.handshake.auth?.token;
   // if (!token) return next(new Error('Auth token required'));
   try {
-    // const parsed = getAccessTokenUser(token);
-    const parsed = getAccessTokenUser(accessToken);
-    if (!parsed.success) return next(new Error('Invalid token'));
-    socket.user = parsed.data.user;
+    const { success, data } = getAccessTokenUser(accessToken);
+    if (!success) return next(new Error('Unauthorized'));
+    socket.user = data;
     next();
   } catch (err) {
-    next(new Error('Invalid token'));
+    next(new Error('Unauthorized'));
   }
 }

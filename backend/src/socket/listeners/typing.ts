@@ -6,6 +6,10 @@ type TypingPayload = {
   recieverId: string;
 };
 
+// helper
+const getSocketAuthUserId = (socket: Socket) => socket.user?.id.toString();
+
+// 👉👉👉
 export default function registerTypingHandlers(
   io: Server,
   socket: Socket,
@@ -19,7 +23,7 @@ export default function registerTypingHandlers(
     const onlineUser = onlineUsers.get(recieverId);
     if (!onlineUser) return;
     io.to(onlineUser).emit('typing:start', {
-      senderId: socket.user?._id.toString(),
+      senderId: getSocketAuthUserId(socket),
     });
   });
 
@@ -27,7 +31,7 @@ export default function registerTypingHandlers(
     const onlineUser = onlineUsers.get(recieverId);
     if (!onlineUser) return;
     io.to(onlineUser).emit('typing:stop', {
-      senderId: socket.user?._id,
+      senderId: getSocketAuthUserId(socket),
     });
   });
 }
