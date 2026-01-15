@@ -3,7 +3,7 @@ import jwt, { type JwtPayload } from 'jsonwebtoken';
 import z from 'zod';
 
 import { MS_EXPIRY } from '@/constants.js';
-import type { UserId } from '@/modules/user/user.types.js';
+import type { UserId } from '@/features/user/user.types.js';
 import { AppEnvs } from '@/shared/configs/AppEnvs.js';
 
 export const decodedTokenUserSchema = z.object({

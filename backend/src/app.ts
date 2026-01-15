@@ -10,10 +10,10 @@ import { AppEnvs } from '@/shared/configs/AppEnvs.js';
 import { connectDB } from '@/shared/db/mongo.js';
 import { sendApiResponse } from '@/utils/sendResponse.js';
 
+import { AuthService } from './features/auth/auth.service.js';
+import { TokenService } from './features/auth/token/token.service.js';
+import { UserRepositoryMongo } from './features/user/user.repository.mongo.js';
 import { v1Routes } from './http/v1/index.js';
-import { AuthService } from './modules/auth/auth.service.js';
-import { TokenService } from './modules/auth/token/token.service.js';
-import { UserRepositoryMongo } from './modules/user/user.repository.mongo.js';
 import { RequiredServices } from './types/httpServices.js';
 
 const { FRONTEND_URL } = AppEnvs;

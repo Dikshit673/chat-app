@@ -1,6 +1,6 @@
+import { UserId } from '@/features/user/user.types.js';
+import { userIdSchema } from '@/features/user/user.validation.schema.js';
 import { SessionModel } from '@/models/session.model.js';
-import { UserId } from '@/modules/user/user.types.js';
-import { userIdSchema } from '@/modules/user/user.validation.schema.js';
 
 import type { SessionRepository } from './session.repository.js';
 import type {

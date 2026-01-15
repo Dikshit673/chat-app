@@ -1,4 +1,4 @@
-import { SafeJwtUserPayload } from '@/modules/auth/auth.types.ts';
+import { SafeJwtUserPayload } from '@/features/auth/auth.types.ts';
 
 declare module 'express' {
   interface Request {

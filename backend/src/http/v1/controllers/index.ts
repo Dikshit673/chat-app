@@ -1,4 +1,4 @@
-import { authController } from '@/modules/auth/auth.controller.js';
+import { authController } from '@/features/auth/auth.controller.js';
 // import type { AuthService } from '@/modules/auth/auth.service.js';
 import { RequiredServices } from '@/types/httpServices.js';
 

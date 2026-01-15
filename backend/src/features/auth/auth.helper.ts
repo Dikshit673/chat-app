@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 
-import type { AuthTokens } from '@/modules/auth/auth.service.js';
+import type { AuthTokens } from '@/features/auth/auth.service.js';
 import {
   clearAccessCookies,
   clearCsrfCookies,

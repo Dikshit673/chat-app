@@ -1,5 +1,5 @@
-import { TokenService } from '@/modules/auth/token/token.service.js';
-import { UserRepository } from '@/modules/user/user.repository.js';
+import { TokenService } from '@/features/auth/token/token.service.js';
+import { UserRepository } from '@/features/user/user.repository.js';
 
 import { AuthService } from './auth.service.js';
 

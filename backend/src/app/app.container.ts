@@ -1,5 +1,5 @@
-import { buildAuthModule } from '@/modules/auth/auth.container.js';
-import { buildUserModule } from '@/modules/user/user.container.js';
+import { buildAuthModule } from '@/features/auth/auth.container.js';
+import { buildUserModule } from '@/features/user/user.container.js';
 
 // app/container.ts
 export function buildContainer() {

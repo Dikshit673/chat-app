@@ -1,8 +1,8 @@
+import type { ConversationId } from '@/features/conversation/conversation.types.js';
+import { conversationIdSchema } from '@/features/conversation/conversation.validation.schema.js';
+import type { UserId } from '@/features/user/user.types.js';
+import { userIdSchema } from '@/features/user/user.validation.schema.js';
 import { MessageModel } from '@/models/message.model.js';
-import type { ConversationId } from '@/modules/conversation/conversation.types.js';
-import { conversationIdSchema } from '@/modules/conversation/conversation.validation.schema.js';
-import type { UserId } from '@/modules/user/user.types.js';
-import { userIdSchema } from '@/modules/user/user.validation.schema.js';
 
 import type { MessageRepository } from './message.repository.js';
 import type { Message, MessageId } from './message.types.js';

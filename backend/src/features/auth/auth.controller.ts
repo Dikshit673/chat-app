@@ -1,5 +1,5 @@
 import { COOKIE_NAMES } from '@/constants.js';
-import type { AuthService } from '@/modules/auth/auth.service.js';
+import type { AuthService } from '@/features/auth/auth.service.js';
 import { ApiError } from '@/utils/ApiError.js';
 import { asyncHandler } from '@/utils/functionHandlers.js';
 import { sendApiResponse } from '@/utils/sendResponse.js';

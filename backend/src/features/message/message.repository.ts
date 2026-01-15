@@ -1,5 +1,5 @@
-import type { ConversationId } from '@/modules/conversation/conversation.types.js';
-import type { UserId } from '@/modules/user/user.types.js';
+import type { ConversationId } from '@/features/conversation/conversation.types.js';
+import type { UserId } from '@/features/user/user.types.js';
 
 import type { Message, MessageId } from './message.types.js';
 

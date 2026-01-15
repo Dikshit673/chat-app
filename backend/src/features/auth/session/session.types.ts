@@ -1,4 +1,4 @@
-import type { UserId } from '@/modules/user/user.types.js';
+import type { UserId } from '@/features/user/user.types.js';
 import type { Brand } from '@/types/brand.js';
 
 export type SessionId = Brand<string, 'SessionId'>;

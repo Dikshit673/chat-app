@@ -2,8 +2,8 @@ import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
 
 import { MS_EXPIRY } from '@/constants.js';
-import { SafeJwtUserPayload } from '@/modules/auth/auth.types.js';
-import { decodedTokenUserSchema } from '@/modules/auth/token/token.service.js';
+import { SafeJwtUserPayload } from '@/features/auth/auth.types.js';
+import { decodedTokenUserSchema } from '@/features/auth/token/token.service.js';
 import { AppEnvs } from '@/shared/configs/AppEnvs.js';
 
 const { ACC_JWT_SECRET, REF_JWT_SECRET } = AppEnvs;

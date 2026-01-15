@@ -1,6 +1,6 @@
+import type { UserId } from '@/features/user/user.types.js';
+import { userIdSchema } from '@/features/user/user.validation.schema.js';
 import { ConversationModel } from '@/models/conversation.model.js';
-import type { UserId } from '@/modules/user/user.types.js';
-import { userIdSchema } from '@/modules/user/user.validation.schema.js';
 
 import type { ConversationRepository } from './conversation.repository.js';
 import type { Conversation, ConversationId } from './conversation.types.js';

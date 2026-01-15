@@ -1,6 +1,6 @@
+import type { UserRepository } from '@/features/user/user.repository.js';
+import type { UserId } from '@/features/user/user.types.js';
 import { comparePassword } from '@/lib/bcrypt.js';
-import type { UserRepository } from '@/modules/user/user.repository.js';
-import type { UserId } from '@/modules/user/user.types.js';
 
 import { SessionRepositoryMongo } from './session/session.repository.mongo.js';
 import type { TokenService } from './token/token.service.js';
