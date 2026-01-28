@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --ext \"ts mts cts js mjs cjs json\" --exec \"tsx src/server.ts\"",
-    "start": "tsx src/server.ts"
+    "dev": "nodemon --ext \"ts mts cts js mjs cjs json\" --exec \"tsx src/main.ts\"",
+    "start": "tsx src/main.ts"
   },
   "keywords": [],
   "author": "",

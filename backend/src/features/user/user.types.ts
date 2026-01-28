@@ -9,6 +9,8 @@ export interface User {
   password: string;
   role: string;
   profilePic?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type InputUserPayload = Pick<User, 'email' | 'name' | 'password'>;

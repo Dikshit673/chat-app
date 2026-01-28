@@ -8,4 +8,5 @@ export interface Conversation {
   participants: UserId[]; // userIds
   isGroup: boolean;
   createdAt: Date;
+  updatedAt: Date;
 }

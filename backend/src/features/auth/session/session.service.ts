@@ -1,6 +1,6 @@
-import crypto from 'crypto';
+import { UserId } from '@/features/user/user.types.js';
 
-import type { SessionRepository } from './session.repository.js';
+import type { SessionRepo } from './session.repo.js';
 import type {
   InputSessionPayload,
   Session,
@@ -8,39 +8,46 @@ import type {
 } from './session.types.js';
 
 export class SessionService {
-  constructor(private readonly sessionRepo: SessionRepository) {}
+  constructor(private readonly sessionRepo: SessionRepo) {}
 
-  private hash(token: string) {
-    return crypto.createHash('sha256').update(token).digest('hex');
+  private async getUserSession(userId: UserId): Promise<Session | null> {
+    return this.sessionRepo.findByUserId(userId);
   }
 
-  async createSession(input: InputSessionPayload): Promise<Session> {
+  private async saveNewSession(input: InputSessionPayload): Promise<Session> {
     return this.sessionRepo.create(input);
   }
 
-  async validateRefreshToken(
-    sessionId: SessionId,
-    refreshToken: string
-  ): Promise<Session> {
-    const session = await this.sessionRepo.findById(sessionId);
-    if (!session?.isValid) throw new Error('Invalid session');
-    if (session.refreshTokenHash !== this.hash(refreshToken)) {
-      throw new Error('Refresh token mismatch');
-    }
-    return session;
-  }
-
-  async rotateRefreshToken(
-    sessionId: SessionId,
-    newRefreshToken: string
+  private async updateUserSession(
+    userId: UserId,
+    refreshTokenHash: string
   ): Promise<void> {
-    await this.sessionRepo.replaceRefreshToken(
-      sessionId,
-      this.hash(newRefreshToken)
-    );
+    this.sessionRepo.replaceRefreshTokenByUserId(userId, refreshTokenHash);
   }
 
-  async logout(sessionId: SessionId): Promise<void> {
-    await this.sessionRepo.invalidate(sessionId);
+  private async invalidateUserSession(sessionId: SessionId): Promise<void> {
+    this.sessionRepo.invalidate(sessionId);
+  }
+
+  async rotate(userId: UserId, refreshToken: string) {
+    const session = await this.getUserSession(userId);
+
+    if (session) {
+      await this.invalidateUserSession(session.id);
+      await this.updateUserSession(session.userId, refreshToken);
+      return;
+    }
+
+    await this.saveNewSession({
+      userId,
+      refreshTokenHash: refreshToken,
+      isValid: true,
+    });
+  }
+
+  async logout(userId: UserId) {
+    const session = await this.getUserSession(userId);
+    if (!session) throw new Error('session not found');
+    await this.invalidateUserSession(session.id);
   }
 }

@@ -1,0 +1,15 @@
+import type { ConversationId } from '@/features/conversation/conversation.types.js';
+import type { UserId } from '@/features/user/user.types.js';
+
+import type { Message, MessageId } from './message.types.js';
+
+export interface MessageRepo {
+  create(message: Message): Promise<Message>;
+  findByConversationId(
+    conversationId: ConversationId,
+    limit: number,
+    cursor?: Date
+  ): Promise<Message[]>;
+
+  markAsSeen(messageId: MessageId, userId: UserId): Promise<void>;
+}

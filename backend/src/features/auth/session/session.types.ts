@@ -10,16 +10,14 @@ export interface Session {
   userAgent?: string;
   ip?: string;
   isValid: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface CreateSessionInput {
-  userId: UserId;
-  refreshToken: string;
-  userAgent?: string;
-  ip?: string;
-}
+export type CreateSessionInput = Pick<
+  Session,
+  'userId' | 'refreshTokenHash' | 'userAgent' | 'ip'
+>;
 
 export type InputSessionPayload = Pick<
   Session,

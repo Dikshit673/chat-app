@@ -1,7 +1,4 @@
-import {
-  loginUserSchema,
-  registerUserSchema,
-} from './auth.validation.schema.js';
+import { loginUserSchema, registerUserSchema } from './auth.schema.js';
 
 export class AuthValidation {
   login(inputData: unknown) {

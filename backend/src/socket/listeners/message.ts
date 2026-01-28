@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 
-import { MessageModel } from '@/models/message.model.js';
+import { MessageModel } from '@/infra/db/models/message.model.js';
 
 import {
   DeleteMessagePayload,
