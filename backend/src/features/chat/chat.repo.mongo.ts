@@ -1,5 +1,5 @@
-import type { ChatRepo } from './chat.repo.js';
-import { Chat } from './chat.types.js';
+import { type ChatRepo } from './chat.repo.js';
+import { type Chat } from './chat.types.js';
 
 export class ChatRepoMongo implements ChatRepo {
   async create(): Promise<Chat> {

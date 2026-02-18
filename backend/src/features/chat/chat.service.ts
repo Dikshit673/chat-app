@@ -1,8 +1,8 @@
-import { Brand } from '@/types/brand.js';
+import { type Brand } from '@/types/brand.js';
 
-import { ConversationId } from '../conversation/conversation.types.js';
-import { UserId } from '../user/user.types.js';
-import { ChatRepo } from './chat.repo.js';
+import { type ConversationId } from '../conversation/domain/conversation.types.js';
+import { type UserId } from '../user/domain/user.types.js';
+import { type ChatRepo } from './chat.repo.js';
 
 export type RoomId = Brand<string, 'RoomId'>;
 

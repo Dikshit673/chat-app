@@ -1,7 +1,7 @@
-import { SafeUserPayload } from '@/features/auth/tokens/token.schema.ts';
+import type { AccessTokenPayload } from '@/features/auth/auth-tokens/index.ts';
 
 declare module 'socket.io' {
   interface Socket {
-    user?: SafeUserPayload;
+    user?: AccessTokenPayload;
   }
 }

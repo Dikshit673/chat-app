@@ -1,53 +1,38 @@
-import { buildAppServices } from './infra/app/app.container.js';
-import { buildAppMiddleware } from './infra/app/app.middleware.js';
-import { buildAppRouter } from './infra/app/app.router.js';
-import App from './infra/app/express.app.js';
-import { HttpServer } from './infra/http/http.server.js';
-import { WsContext } from './infra/ws/ws.context.js';
-import { WsRouter } from './infra/ws/ws.router.js';
-import { WsServer } from './infra/ws/ws.server.js';
-import { LoggerService } from './services/logger.js';
-import { AppEnvs } from './configs/AppEnvs.js';
+import { bootstrap } from './bootstrap.js';
+import { Logger } from './services/index.js';
 
-// main
-function main() {
-  // build services
-  const services = buildAppServices();
+async function execute(logger: Logger) {
+  const { httpServer, wsServer } = await bootstrap();
 
-  // build routers and middlewares
-  const appRouters = buildAppRouter(services);
-  const appMiddlewares = buildAppMiddleware(services);
+  httpServer.start();
 
-  // build app
-  const express = new App({
-    port: AppEnvs.PORT,
-    environment: AppEnvs.NODE_ENV,
-    corsOrigin: AppEnvs.FRONTEND_URL,
-    routers: appRouters,
-    middlewares: appMiddlewares,
-  });
-
-  // create http server
-  const server = new HttpServer(express.app, { port: 3000 });
-
-  // create ws server
-  const wsServer = new WsServer(
-    server.getHttpServer(),
-    new WsRouter([]),
-    new WsContext(),
-    new LoggerService()
-  );
-
-  // start servers
-  server.start();
-
-  // shutdown
-  process.on('SIGINT', async () => {
+  const shutdown = async (signal: string) => {
+    logger.warn(`⚠️ Received ${signal}`);
     await wsServer.shutdown();
-    await server.shutdown();
+    await httpServer.shutdown();
     process.exit(0);
+  };
+
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
+  process.on('uncaughtException', async (err) => {
+    logger.error('💥 Uncaught exception', err);
+    await shutdown('uncaughtException');
+  });
+  process.on('unhandledRejection', async (err) => {
+    logger.error(`💥 Unhandled rejection ${err}`);
+    await shutdown('unhandledRejection');
   });
 }
 
-// run
+async function main() {
+  const logger = new Logger('MAIN', 'info');
+  try {
+    await execute(logger);
+  } catch (error) {
+    logger.error(`❌ Failed to start app ${error}`);
+    process.exit(1);
+  }
+}
+
 main();

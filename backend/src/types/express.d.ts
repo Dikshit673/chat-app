@@ -1,8 +1,8 @@
-import { SafeUserPayload } from '@/features/auth/tokens/token.schema.ts';
+import type { AccessTokenPayload } from '@/features/auth/auth-tokens/index.ts';
 
 declare module 'express' {
   interface Request {
-    user?: SafeUserPayload;
+    user?: AccessTokenPayload;
     deviceId?: string;
   }
 }

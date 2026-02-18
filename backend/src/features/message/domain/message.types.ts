@@ -1,0 +1,15 @@
+import { type ConversationId } from '@/features/conversation/domain/conversation.types.js';
+import { type UserId } from '@/features/user/domain/user.types.js';
+import { type Brand } from '@/types/brand.js';
+
+export type MessageId = Brand<string, 'MessageId'>;
+
+export interface Message {
+  id: MessageId;
+  conversationId: ConversationId;
+  senderId: UserId;
+  text: string;
+  seenBy: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}

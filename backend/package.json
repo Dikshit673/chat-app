@@ -1,8 +1,8 @@
 {
-  "name": "chatsApp-server",
+  "name": "chatsapp-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/main.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon --ext \"ts mts cts js mjs cjs json\" --exec \"tsx src/main.ts\"",
